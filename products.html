@@ -57,6 +57,7 @@ nav.menu a:hover,nav.menu a[aria-current="page"]{color:var(--silk);background:#1
 
 .layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;padding-block:40px 80px}
 @media (max-width:860px){.layout{grid-template-columns:1fr;gap:20px}}
+.layout>*{min-width:0}
 aside nav{position:sticky;top:calc(env(safe-area-inset-top,0px) + 84px);display:grid;gap:22px}
 .grp-title{font-family:var(--font-mono);font-size:12px;letter-spacing:.12em;color:var(--copper);margin-bottom:6px}
 .side{list-style:none;margin:0;padding:0;display:grid;gap:2px}

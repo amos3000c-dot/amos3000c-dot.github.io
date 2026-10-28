@@ -214,7 +214,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
       <a href="#business">사업분야</a>
       <a href="#process">제조공정</a>
       <a href="#fpcb">FPCB</a>
-      <a href="#cases">제작사례</a>
+      <a href="products.html">제품</a>
       <a href="#guide">견적가이드</a>
       <a href="#about">회사소개</a>
     </nav>
@@ -362,7 +362,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
       </div>
       <p class="count" id="caseCount"></p>
       <div class="case-list" id="caseList"></div>
-      <div class="more"><button class="btn btn-line" type="button" id="caseMore">더 보기</button></div>
+      <div class="more"><a class="btn btn-line" id="caseMore" href="products.html">전체 제품 페이지 보기 →</a></div>
     </div>
   </section>
 
@@ -443,7 +443,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   m.addEventListener('click',function(e){if(e.target.tagName==='A'){m.classList.remove('open');t.setAttribute('aria-expanded','false')}});
 
   var products=window.AMOS_PRODUCTS||[],list=document.getElementById('caseList'),more=document.getElementById('caseMore'),countEl=document.getElementById('caseCount'),search=document.getElementById('caseSearch');
-  var state={f:'all',q:'',shown:12};
+  var state={f:'all',q:'',shown:8};
   function render(){
     var q=state.q.toLowerCase();
     var hits=products.filter(function(p){return (state.f==='all'||p[0]===state.f)&&(!q||(p[1]+' '+p[2]).toLowerCase().indexOf(q)>-1)});
@@ -458,15 +458,13 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     });
     if(!hits.length){list.innerHTML='<p class="empty">검색 결과가 없습니다. 다른 품명이나 재질로 찾아보세요.</p>'}
     countEl.textContent='총 '+hits.length+'개 중 '+Math.min(state.shown,hits.length)+'개 표시';
-    more.hidden=hits.length<=state.shown;
   }
   render();
-  more.addEventListener('click',function(){state.shown+=12;render()});
-  search.addEventListener('input',function(){state.q=search.value.trim();state.shown=12;render()});
+  search.addEventListener('input',function(){state.q=search.value.trim();render()});
   document.querySelectorAll('.filters button').forEach(function(b){
     b.addEventListener('click',function(){
       document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false')});
-      b.setAttribute('aria-pressed','true');state.f=b.dataset.f;state.shown=12;render();
+      b.setAttribute('aria-pressed','true');state.f=b.dataset.f;render();
     });
   });
 

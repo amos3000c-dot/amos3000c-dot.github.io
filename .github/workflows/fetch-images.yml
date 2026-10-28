@@ -1,0 +1,64 @@
+name: fetch-product-images
+on:
+  workflow_dispatch:
+  push:
+    paths: ['.github/workflows/fetch-images.yml']
+permissions:
+  contents: write
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install pillow
+      - name: Download and crop product photos
+        shell: python
+        run: |
+          import io, os, urllib.request
+          from PIL import Image
+          U = {"r1":"122/147/d7a84084800eaec5647103d9d7458da3","r2":"124/157/43a60585082bad7b5b5ee3e4605bde36","r3":"126/173/560254fc857cf42390ef49ddf9dec14d","r4":"128/175/504f1487e7096ee4b50b5dd56a9b4deb","r5":"130/177/82f3a2f03de37b549a3bb276eb39c7e0","r6":"479/485/3d3275a490e2de8def63d588c3fc662d","r7":"668/676/7c50ab233f60679e1ea4d62558551551","r8":"754/758/e4632eee5a8e5b1ed19934fa80cc0392","r9":"900/930/db179e0255b9b5a64f78f1a634c365cb","r10":"1000/004/001/5e2ca2ca4238b822f645599479f35722","f1":"139/181/2908db363545534b020864108cc19a7d","f2":"672/680/7eae786b141057b884a6697239cba7c2","f3":"949/963/6bbef5bb486d91ee20a1486a092f925c"}
+          os.makedirs("images", exist_ok=True)
+          for k, u in U.items():
+              data = urllib.request.urlopen("http://amos3000.co.kr/files/attach/images/%s.jpg" % u, timeout=60).read()
+              im = Image.open(io.BytesIO(data)).convert("RGB")
+              W, H = im.size
+              px = im.load()
+              lines = []
+              for y in range(H):
+                  n = 0
+                  for x in range(W):
+                      r, g, b = px[x, y]
+                      v = (r + g + b) / 3
+                      if 150 < v < 245:
+                          n += 1
+                  if n / W > 0.6:
+                      lines.append(y)
+              merged = []
+              for y in lines:
+                  if not merged or y - merged[-1][1] > 2:
+                      merged.append([y, y])
+                  else:
+                      merged[-1][1] = y
+              rows = []
+              for i in range(len(merged) - 1):
+                  a, b = merged[i][1] + 1, merged[i + 1][0]
+                  if b - a > 40:
+                      rows.append((a, b))
+              for i, (a, b) in enumerate(rows):
+                  x0, x1, y0, y1 = 999, -1, 99999, -1
+                  for y in range(a + 2, b - 2):
+                      for x in range(135, 307):
+                          r, g, bb = px[x, y]
+                          if min(r, g, bb) < 225:
+                              x0 = min(x0, x); x1 = max(x1, x); y0 = min(y0, y); y1 = max(y1, y)
+                  if x1 < 0:
+                      continue
+                  crop = im.crop((x0, y0, x1 + 1, y1 + 1))
+                  crop.save("images/%s-%02d.jpg" % (k, i + 1), quality=88)
+              print(k, len(rows))
+      - run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@users.noreply.github.com"
+          git add images
+          git commit -m "Add product photos from amos3000.co.kr" || echo "nothing to commit"
+          git push

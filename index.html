@@ -8,13 +8,14 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;700&display=swap">
 <style>
-/* Layout: 가비아식 기업 랜딩 구조(헤더 · 히어로 · 사업분야 · 사례 · 가이드 · 문의) 위에, 기판 위 구리 배선을 모티프로 한 다크 히어로 */
+/* Layout: 가비아식 기업 랜딩 구조(헤더 · 히어로 · 사업분야 · 공정 · FPCB · 사례 · 가이드 · 문의) 위에, 기판 위 구리 배선을 모티프로 한 다크 히어로 */
 :root{
-  --substrate:#0e1a2b;      /* 기판(다크 네이비) */
+  --substrate:#0e1a2b;
   --substrate-2:#152539;
-  --copper:#b8733a;         /* 구리 배선 */
+  --copper:#b8733a;
   --copper-soft:#e9d3bf;
-  --silk:#f4f6f8;           /* 실크스크린 흰색 */
+  --silk:#f4f6f8;
+  --pi:#e3a63b;
   --bg:#f6f7f9;
   --surface:#ffffff;
   --fg:#16202d;
@@ -45,8 +46,8 @@ header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background
 .top .wrap{display:flex;align-items:center;gap:24px;min-height:64px}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:20px}
 .logo svg{flex:none}
-nav.menu{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
-nav.menu a{text-decoration:none;font-size:15px;padding:8px 12px;border-radius:6px;color:#c9d3df}
+nav.menu{display:flex;gap:2px;margin-left:auto;flex-wrap:wrap}
+nav.menu a{text-decoration:none;font-size:15px;padding:8px 11px;border-radius:6px;color:#c9d3df}
 nav.menu a:hover{color:var(--silk);background:#1b2c43}
 .btn{display:inline-flex;align-items:center;gap:8px;font:500 15px var(--font-sans);padding:11px 18px;border-radius:8px;border:1px solid transparent;cursor:pointer;text-decoration:none}
 .btn-copper{background:var(--copper);color:#fff}
@@ -54,7 +55,7 @@ nav.menu a:hover{color:var(--silk);background:#1b2c43}
 .btn-ghost{border-color:#3a4f6b;color:var(--silk);background:transparent}
 .btn-ghost:hover{border-color:var(--copper)}
 .menu-toggle{display:none;margin-left:auto;background:none;border:1px solid #3a4f6b;color:var(--silk);border-radius:6px;padding:6px 10px;font:inherit}
-@media (max-width:860px){
+@media (max-width:920px){
   .menu-toggle{display:inline-block}
   nav.menu{display:none;position:absolute;left:0;right:0;top:64px;background:var(--substrate);flex-direction:column;padding:8px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid #22344d}
   nav.menu.open{display:flex}
@@ -68,56 +69,88 @@ nav.menu a:hover{color:var(--silk);background:#1b2c43}
 .hero .wrap{position:relative;z-index:1;padding-block:96px 88px}
 .hero h1{font-size:clamp(30px,5vw,54px);font-weight:700;max-width:16em;margin-top:18px;letter-spacing:-.01em}
 .hero h1 em{font-style:normal;color:var(--copper)}
-.hero p.lead{max-width:34em;color:#b9c5d3;font-size:clamp(16px,2vw,19px);font-weight:300;margin:22px 0 34px}
+.hero p.lead{max-width:36em;color:#b9c5d3;font-size:clamp(16px,2vw,19px);font-weight:300;margin:22px 0 34px}
 .hero .actions{display:flex;gap:12px;flex-wrap:wrap}
-.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#22344d;border:1px solid #22344d;border-radius:10px;overflow:hidden;margin-top:64px;max-width:760px}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#22344d;border:1px solid #22344d;border-radius:10px;overflow:hidden;margin-top:64px;max-width:820px}
 .facts div{background:rgba(14,26,43,.92);padding:18px 20px}
 .facts b{display:block;font-size:22px;font-weight:500}
+.facts b small{font-family:var(--font-mono);font-size:12px;color:var(--copper);margin-right:8px;font-weight:400}
 .facts span{font-size:13px;color:#93a3b6}
 @media (max-width:620px){.facts{grid-template-columns:1fr}}
 
 /* Sections */
 section.block{padding-block:88px}
+.alt{background:var(--surface);border-block:1px solid var(--line)}
 .sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
-.sec-head h2{font-size:clamp(26px,3.4vw,36px);margin-top:10px}
-.sec-head p{color:var(--muted);max-width:30em;margin:0}
+.sec-head h2,.h2{font-size:clamp(26px,3.4vw,36px);margin-top:10px}
+.sec-head p{color:var(--muted);max-width:32em;margin:0}
 
 /* Business cards */
 .biz{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
 @media (max-width:980px){.biz{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:560px){.biz{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;text-decoration:none;transition:border-color .2s,transform .2s}
-.card:hover{border-color:var(--copper);transform:translateY(-2px)}
-@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:26px 24px;display:flex;flex-direction:column;gap:14px}
 .card .code{font-family:var(--font-mono);font-size:12px;color:var(--copper);letter-spacing:.08em}
 .card h3{font-size:21px}
 .card p{margin:0;color:var(--muted);font-size:15px}
 .card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;border-top:1px dashed var(--line);padding-top:14px;margin-top:auto}
 .card li::before{content:"— ";color:var(--copper)}
+.apps{margin-top:40px;display:grid;grid-template-columns:200px minmax(0,1fr);gap:16px 24px;align-items:start}
+@media (max-width:700px){.apps{grid-template-columns:1fr}}
+.apps h3{font-size:16px}
+.apps p{margin:4px 0 0;font-size:13px;color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips span{font-family:var(--font-mono);font-size:13px;padding:5px 11px;border-radius:6px;background:var(--chip);border:1px solid var(--line)}
+
+/* Process */
+.process{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;counter-reset:step}
+@media (max-width:760px){.process{grid-template-columns:1fr}}
+.process li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 14px;padding:18px 0;border-bottom:1px solid var(--line);counter-increment:step}
+.process li::before{content:counter(step,decimal-leading-zero);grid-row:span 2;font-family:var(--font-mono);font-size:15px;color:var(--copper);padding-top:2px}
+.process b{font-size:17px;font-weight:500}
+.process span{font-size:14px;color:var(--muted);font-family:var(--font-mono)}
+
+/* FPCB */
+.fpcb{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:48px;align-items:start}
+@media (max-width:860px){.fpcb{grid-template-columns:1fr}}
+.fpcb p.intro{color:var(--muted);margin:16px 0 24px}
+.merits{list-style:none;margin:0 0 28px;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+@media (max-width:520px){.merits{grid-template-columns:1fr}}
+.merits li{background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:12px 14px;font-size:15px}
+.stack{background:var(--substrate);border-radius:14px;padding:24px;color:var(--silk)}
+.stack h3{font-size:18px;margin-bottom:6px}
+.stack p{color:#b9c5d3;font-size:14px;margin:12px 0 0}
+.stack svg{width:100%;height:auto;display:block;margin-top:12px}
 
 /* Cases */
-.cases-bg{background:var(--surface);border-block:1px solid var(--line)}
 .filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
 .filters button{font:500 14px var(--font-sans);padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
 .filters button[aria-pressed="true"]{background:var(--substrate);border-color:var(--substrate);color:var(--silk)}
 :root[data-theme="dark"] .filters button[aria-pressed="true"]{background:var(--copper);border-color:var(--copper)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .filters button[aria-pressed="true"]{background:var(--copper);border-color:var(--copper)}}
-.case-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
-@media (max-width:900px){.case-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.case-list{grid-template-columns:1fr}}
-.case{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-width:0}
-.case .pad{flex:none;width:40px;height:40px;border-radius:8px;background:var(--substrate);display:grid;place-items:center}
-.case .pad i{width:12px;height:12px;border-radius:50%;border:3px solid var(--copper);display:block}
-.case div{min-width:0}
-.case b{display:block;font-family:var(--font-mono);font-weight:500;font-size:15px;overflow-wrap:anywhere}
-.case span{font-size:13px;color:var(--muted)}
-.note{font-size:13px;color:var(--muted);margin-top:18px}
+.toolbar{display:flex;gap:12px;flex-wrap:wrap;align-items:center;justify-content:space-between;margin-bottom:24px}
+.toolbar .filters{margin:0}
+.search{font:400 15px var(--font-sans);padding:9px 14px;border-radius:999px;border:1px solid var(--line);background:var(--bg);color:var(--fg);width:min(280px,100%)}
+.count{font-family:var(--font-mono);font-size:13px;color:var(--muted);margin-bottom:14px}
+.case-list{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+@media (max-width:980px){.case-list{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.case-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:400px){.case-list{grid-template-columns:1fr}}
+.case{border:1px solid var(--line);border-radius:10px;background:var(--bg);min-width:0;overflow:hidden;display:flex;flex-direction:column}
+.case .ph{aspect-ratio:4/3;background:#fff;display:grid;place-items:center;border-bottom:1px solid var(--line);max-width:100%}
+.case .ph img{width:100%;height:100%;object-fit:contain;padding:8px}
+.case .tx{padding:12px 14px 14px;display:grid;gap:4px;min-width:0}
+.case .grp{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--copper)}
+.case b{font-family:var(--font-mono);font-weight:500;font-size:14px;line-height:1.4;overflow-wrap:anywhere}
+.case span.sp{font-size:13px;color:var(--muted);line-height:1.5;overflow-wrap:anywhere}
+.more{display:flex;justify-content:center;margin-top:24px}
+.empty{color:var(--muted);padding:24px 0}
 
 /* Guide (quiz) */
 .guide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:40px;align-items:start}
 @media (max-width:860px){.guide{grid-template-columns:1fr}}
 .quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px}
-.steps{display:flex;gap:8px;margin-bottom:22px;font-family:var(--font-mono);font-size:12px}
+.steps{display:flex;gap:8px;margin-bottom:22px;font-family:var(--font-mono);font-size:12px;flex-wrap:wrap}
 .steps span{padding:4px 10px;border-radius:999px;background:var(--chip);color:var(--muted)}
 .steps span.on{background:var(--copper);color:#fff}
 .quiz h3{font-size:20px;margin-bottom:16px}
@@ -134,11 +167,14 @@ section.block{padding-block:88px}
 .btn-line{border-color:var(--line);color:var(--fg);background:transparent}
 .btn-line:hover{border-color:var(--copper)}
 
-/* Notice */
-.notice{list-style:none;padding:0;margin:0;border-top:2px solid var(--fg)}
-.notice li{display:flex;justify-content:space-between;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
-.notice time{font-family:var(--font-mono);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
-.tag-ex{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--chip);color:var(--muted);margin-right:8px}
+/* Philosophy */
+.mission{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:40px;align-items:center}
+@media (max-width:860px){.mission{grid-template-columns:1fr}}
+.mission blockquote{margin:12px 0 0;font-size:clamp(20px,2.6vw,28px);line-height:1.55;font-weight:300}
+.mission blockquote strong{font-weight:500;color:var(--copper)}
+.service{border:1px solid var(--line);border-radius:12px;padding:22px 24px;background:var(--surface)}
+.service b{display:block;font-size:17px;margin-bottom:6px}
+.service p{margin:0;color:var(--muted);font-size:15px}
 
 /* Contact */
 .contact{background:var(--substrate);color:var(--silk)}
@@ -149,7 +185,7 @@ section.block{padding-block:88px}
 .info{display:grid;gap:12px;margin-top:28px}
 .info div{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
 .info dt{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;color:var(--copper);width:56px}
-.info dd{margin:0;font-size:17px;font-variant-numeric:tabular-nums;user-select:all}
+.info dd{margin:0;font-size:17px;font-variant-numeric:tabular-nums;user-select:all;overflow-wrap:anywhere;min-width:0}
 .copy{font:400 12px var(--font-sans);background:none;border:1px solid #3a4f6b;color:#c9d3df;border-radius:5px;padding:3px 8px;cursor:pointer}
 form.f{background:var(--substrate-2);border:1px solid #22344d;border-radius:14px;padding:28px;display:grid;gap:14px;grid-template-columns:1fr 1fr}
 form.f .full{grid-column:1/-1}
@@ -157,9 +193,7 @@ form.f .full{grid-column:1/-1}
 form.f label{display:grid;gap:6px;font-size:14px;color:#c9d3df}
 form.f input,form.f select,form.f textarea{font:400 15px var(--font-sans);padding:11px 12px;border-radius:8px;border:1px solid #33475f;background:#0e1a2b;color:var(--silk);width:100%;min-width:0}
 form.f textarea{min-height:110px;resize:vertical}
-.form-msg{font-size:14px;color:var(--copper-soft);margin:0}
-:root[data-theme="dark"] .form-msg{color:#e2b48a}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .form-msg{color:#e2b48a}}
+.form-msg{font-size:14px;color:#e2b48a;margin:0}
 
 footer{background:#09121e;color:#8796a8;font-size:14px}
 footer .wrap{padding-block:36px;display:grid;gap:10px}
@@ -177,31 +211,32 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     </a>
     <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainMenu">메뉴</button>
     <nav class="menu" id="mainMenu">
-      <a href="#about">회사소개</a>
       <a href="#business">사업분야</a>
+      <a href="#process">제조공정</a>
+      <a href="#fpcb">FPCB</a>
       <a href="#cases">제작사례</a>
       <a href="#guide">견적가이드</a>
-      <a href="#notice">공지사항</a>
+      <a href="#about">회사소개</a>
     </nav>
     <a class="btn btn-copper head-cta" href="#contact">견적 문의</a>
   </div>
 </header>
 
 <main id="top">
-  <section class="hero" id="about">
+  <section class="hero">
     <canvas id="traces" aria-hidden="true"></canvas>
     <div class="wrap">
-      <span class="eyebrow">AMOS · Rigid &amp; Flexible PCB</span>
-      <h1>정밀한 회로를 위한<br><em>PCB 파트너</em>, AMOS</h1>
-      <p class="lead">RF·광통신 시험 보드부터 휘어지는 FPCB까지. 연구소와 개발팀이 설계한 회로를 실제 보드로 만들어 드립니다.</p>
+      <span class="eyebrow">PCB Design · Manufacturing · Assembly</span>
+      <h1>PCB 설계부터 제조, 조립까지<br><em>Total Solution</em></h1>
+      <p class="lead">Build-up, Blind &amp; Buried Via, 임피던스 컨트롤 기술로 고속·RF 보드를 회로 특성에 맞게 설계하고, 샘플부터 양산까지 만들어 드립니다.</p>
       <div class="actions">
         <a class="btn btn-copper" href="#contact">견적 문의하기</a>
         <a class="btn btn-ghost" href="#business">사업분야 보기</a>
       </div>
       <div class="facts">
-        <div><b>Rigid PCB</b><span>설계사양 · 제품 10개 분류</span></div>
-        <div><b>Flexible PCB</b><span>FPCB 소개 · 제품 3개 분류</span></div>
-        <div><b>대전 유성구</b><span>신성로 68번길 31, 101호</span></div>
+        <div><b><small>01</small>설계</b><span>High speed · Impedance · EMI · RF B/D</span></div>
+        <div><b><small>02</small>제조</b><span>Impedance Control · Build-up · FPCB</span></div>
+        <div><b><small>03</small>조립</b><span>Sample · 양산 · Back Plane 조립</span></div>
       </div>
     </div>
   </section>
@@ -210,51 +245,124 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     <div class="wrap">
       <div class="sec-head">
         <div><span class="eyebrow">Business</span><h2>AMOS 사업분야</h2></div>
-        <p>기존 홈페이지의 메뉴를 네 개의 분야로 정리했습니다. 필요한 보드 종류를 골라 바로 확인하세요.</p>
+        <p>개발용 보드의 설계부터 제조, 조립, 신호 해석까지 한 곳에서 맡길 수 있습니다.</p>
       </div>
       <div class="biz">
-        <a class="card" href="#cases">
-          <span class="code">01 · RIGID</span>
-          <h3>Rigid PCB</h3>
-          <p>RF, 고속 신호, 시험·평가용 보드 등 단단한 기판 제작</p>
-          <ul><li>설계사양</li><li>제품 분류 1~10</li></ul>
-        </a>
-        <a class="card" href="#guide">
-          <span class="code">02 · FLEXIBLE</span>
-          <h3>Flexible PCB</h3>
-          <p>좁은 공간과 굴곡이 필요한 연결부를 위한 FPCB 제작</p>
-          <ul><li>FPCB 소개</li><li>제품 분류 1~3</li></ul>
-        </a>
-        <a class="card" href="#cases">
-          <span class="code">03 · CASES</span>
-          <h3>제작 사례</h3>
-          <p>RF 모듈, 광통신 수신부 평가 보드 등 실제 제작한 보드</p>
-          <ul><li>RF · 고주파 보드</li><li>광통신 · 테스트 보드</li></ul>
-        </a>
-        <a class="card" href="#contact">
-          <span class="code">04 · SUPPORT</span>
-          <h3>고객센터</h3>
-          <p>견적과 제작 상담, 공지사항을 한곳에서 확인</p>
-          <ul><li>견적 문의</li><li>공지사항</li></ul>
-        </a>
+        <article class="card">
+          <span class="code">DESIGN</span>
+          <h3>PCB 설계</h3>
+          <p>축적된 기술력으로 Build-up, Blind &amp; Buried Via 등 회로 특성에 맞는 설계를 합니다.</p>
+          <ul><li>High speed B/D</li><li>Impedance Control PCB</li><li>EMI B/D · RF B/D</li></ul>
+        </article>
+        <article class="card">
+          <span class="code">MANUFACTURING</span>
+          <h3>PCB 제조</h3>
+          <p>국내외 선진 업체와의 기술 협력으로 고밀도 PCB를 경쟁력 있는 납기와 품질로 제조합니다.</p>
+          <ul><li>Impedance Control PCB</li><li>Build-up PCB · Buried</li><li>Flexible PCB</li></ul>
+        </article>
+        <article class="card">
+          <span class="code">ASSEMBLY</span>
+          <h3>PCB 조립</h3>
+          <p>유닛 보드 개발용 B/D의 수삽부터 자삽까지, 샘플 조립과 양산 조립을 지원합니다.</p>
+          <ul><li>Sample 조립</li><li>양산 조립</li><li>Back Plane Board 조립</li></ul>
+        </article>
+        <article class="card">
+          <span class="code">SIMULATION</span>
+          <h3>Simulation Service</h3>
+          <p>제작 전에 신호 특성을 해석해 설계 단계에서 문제를 줄입니다.</p>
+          <ul><li>Impedance Analysis</li><li>Delay (Timing) Analysis</li><li>Noise Analysis</li></ul>
+        </article>
+      </div>
+      <div class="apps">
+        <div><h3>설계 &amp; 샘플 제작 분야</h3><p>PCB 설계 및 Sample PCB 제작 실적 분야</p></div>
+        <div class="chips">
+          <span>ADSL</span><span>TRS</span><span>PCS</span><span>CDMA</span><span>WLL</span><span>GSM</span><span>ATM</span><span>Satellite</span><span>RF Board</span><span>Driver Board</span><span>Mother Board</span><span>Super Mini Computer</span><span>MCM-L</span><span>MCM-C</span><span>MCM-D</span><span>BGA</span><span>PBGA</span><span>Micro-BGA</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section class="block cases-bg" id="cases">
+  <section class="block alt" id="process">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Process</span><h2>PCB 제조 공정</h2></div>
+        <p>원판 재단부터 최종 검사·포장까지, 다층 PCB가 만들어지는 11단계입니다.</p>
+      </div>
+      <ol class="process">
+        <li><b>내층 I</b><span>재단 · 내층 노광/현상/부식/박리</span></li>
+        <li><b>내층 II</b><span>Bonding · Lay-up · Press Lamination</span></li>
+        <li><b>드릴 I</b><span>재단 · 면취 · Stack</span></li>
+        <li><b>드릴 II</b><span>Drill · Drill Bit</span></li>
+        <li><b>Photo</b><span>정면 · Lamination · 노광 · 현상</span></li>
+        <li><b>도금 II</b><span>전해 동 도금 · 부식</span></li>
+        <li><b>PSR 인쇄</b><span>Photo Imageable Solder Resist</span></li>
+        <li><b>Marking 인쇄</b><span>Legend Symbol Printing</span></li>
+        <li><b>표면처리</b><span>HASL · Gold Plating · Preflux</span></li>
+        <li><b>외형 가공</b><span>금형 · 라우팅 · 브이컷</span></li>
+        <li><b>검사</b><span>BBT · 육안검사 · 포장</span></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="block" id="fpcb">
+    <div class="wrap fpcb">
+      <div>
+        <span class="eyebrow">Flexible PCB</span>
+        <h2 class="h2">작고 가벼운 제품을 위한 FPCB</h2>
+        <p class="intro">FPCB는 전자제품의 소형화·경량화로 개발된 부품입니다. 작업성이 좋고 내열성, 내곡성, 내약품성이 강해 카메라, 컴퓨터와 주변기기, 휴대폰, 영상·음향기기, 캠코더, 프린터, DVD, TFT LCD, 위성장비, 군사장비, 의료장비 등에 널리 쓰입니다.</p>
+        <ul class="merits">
+          <li>단독으로 3차원 배선 가능</li>
+          <li>기기의 소형화 · 경량화</li>
+          <li>반복 굴곡에도 높은 내구성</li>
+          <li>고밀도 배선 (0.2 mm pitch)</li>
+          <li>배선 오류가 없고 조립성 · 신뢰성 우수</li>
+          <li>연속 생산 방식 가능</li>
+        </ul>
+      </div>
+      <figure class="stack" style="margin:0">
+        <h3>Double Side (양면 구조)</h3>
+        <svg viewBox="0 0 420 210" role="img" aria-label="양면 FPCB 단면: 위아래 커버레이, 동박, 가운데 폴리이미드 베이스 필름, 관통홀">
+          <rect x="20" y="70" width="380" height="12" fill="#e9c27a"/>
+          <rect x="20" y="82" width="380" height="10" fill="#d0763a"/>
+          <rect x="20" y="92" width="380" height="18" fill="#e3a63b"/>
+          <rect x="20" y="110" width="380" height="10" fill="#d0763a"/>
+          <rect x="20" y="120" width="380" height="12" fill="#e9c27a"/>
+          <rect x="110" y="70" width="40" height="12" fill="#0e1a2b"/>
+          <rect x="250" y="120" width="40" height="12" fill="#0e1a2b"/>
+          <rect x="196" y="82" width="10" height="38" fill="#f4f6f8"/>
+          <g stroke="#9fb0c4" stroke-width="1.2" fill="none">
+            <path d="M60 70 V36 H120"/><path d="M130 70 V50 H190"/><path d="M80 87 V170 H120"/><path d="M340 101 V170 H300"/><path d="M201 120 V190 H240"/>
+          </g>
+          <g fill="#f4f6f8" font-family="IBM Plex Mono, monospace" font-size="12">
+            <text x="124" y="40">Coverlay</text>
+            <text x="194" y="54">부품 실장부</text>
+            <text x="124" y="174">Copper Foil</text>
+            <text x="212" y="174">Polyimide</text>
+            <text x="244" y="194">Through Hole</text>
+          </g>
+        </svg>
+        <p>PI 필름 위아래에 동박이 접착된 구조로, 양면 모두에 부품을 실장할 수 있어 같은 크기에서 부품 밀도를 높일 수 있습니다. 상하 패턴을 연결하기 위해 드릴과 PTH 동도금 공정을 거칩니다.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section class="block alt" id="cases">
     <div class="wrap">
       <div class="sec-head">
         <div><span class="eyebrow">Cases</span><h2>제작 사례</h2></div>
-        <p>Rigid 제품 1 분류에 등록된 보드입니다. 용도별로 걸러 볼 수 있습니다.</p>
+        <p>RF·광통신 평가 보드부터 초소형 FPCB까지, 실제로 제작한 보드와 사양입니다.</p>
       </div>
-      <div class="filters" role="group" aria-label="사례 분류">
-        <button type="button" data-f="all" aria-pressed="true">전체</button>
-        <button type="button" data-f="rf" aria-pressed="false">RF · 고주파</button>
-        <button type="button" data-f="opt" aria-pressed="false">광통신 · 고속</button>
-        <button type="button" data-f="test" aria-pressed="false">시험 · 평가</button>
+      <div class="toolbar">
+        <div class="filters" role="group" aria-label="제품 분류">
+          <button type="button" data-f="all" aria-pressed="true">전체</button>
+          <button type="button" data-f="r" aria-pressed="false">Rigid PCB</button>
+          <button type="button" data-f="f" aria-pressed="false">Flexible PCB</button>
+        </div>
+        <input class="search" id="caseSearch" type="search" placeholder="품명·사양 검색 (예: ROSA, RO4350)" aria-label="제작 사례 검색">
       </div>
+      <p class="count" id="caseCount"></p>
       <div class="case-list" id="caseList"></div>
-      <p class="note">※ 사례 사진과 사양은 기존 홈페이지 이미지에서 옮겨 와야 합니다. 시안에서는 보드 이름만 넣었습니다.</p>
+      <div class="more"><button class="btn btn-line" type="button" id="caseMore">더 보기</button></div>
     </div>
   </section>
 
@@ -262,23 +370,23 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     <div class="wrap guide">
       <div>
         <span class="eyebrow">Quote guide</span>
-        <h2 style="font-size:clamp(26px,3.4vw,36px);margin-top:10px">두 가지만 고르면<br>준비할 자료를 알려드려요</h2>
+        <h2 class="h2">두 가지만 고르면<br>준비할 자료를 알려드려요</h2>
         <p style="color:var(--muted);margin-top:16px;max-width:26em">처음 PCB를 맡기는 분도 어떤 자료를 보내면 되는지 바로 알 수 있도록 만든 견적 가이드입니다.</p>
       </div>
       <div class="quiz" id="quiz" aria-live="polite"></div>
     </div>
   </section>
 
-  <section class="block cases-bg" id="notice">
-    <div class="wrap">
-      <div class="sec-head">
-        <div><span class="eyebrow">Notice</span><h2>공지사항</h2></div>
-        <p>기존 게시판 글을 옮겨 올 자리입니다.</p>
+  <section class="block alt" id="about">
+    <div class="wrap mission">
+      <div>
+        <span class="eyebrow">Philosophy</span>
+        <blockquote>모든 일에 처음부터 <strong>고객의 만족과 성능 향상</strong>을 위하여 성실과 신의로 대하고, 선한 사업을 통해 사회에 이익을 환원합니다.</blockquote>
       </div>
-      <ul class="notice">
-        <li><span><span class="tag-ex">예시</span>홈페이지가 새롭게 바뀌었습니다</span><time datetime="2026-11">2026. 11</time></li>
-        <li><span><span class="tag-ex">예시</span>연말 휴무 및 출고 일정 안내</span><time datetime="2026-12">2026. 12</time></li>
-      </ul>
+      <div class="service">
+        <b>출장 서비스</b>
+        <p>보안이 필요하거나 고객이 요청하는 경우 직접 방문해 상담과 지원을 해 드립니다.</p>
+      </div>
     </div>
   </section>
 
@@ -292,6 +400,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
           <div><dt>TEL</dt><dd id="tel">042-861-3402</dd><button class="copy" type="button" data-copy="tel">복사</button></div>
           <div><dt>FAX</dt><dd>042-362-3400</dd></div>
           <div><dt>E-MAIL</dt><dd id="mail">amos@amos3000.co.kr</dd><button class="copy" type="button" data-copy="mail">복사</button></div>
+          <div><dt></dt><dd style="font-size:15px">3000amos@gmail.com</dd></div>
           <div><dt>ADDR</dt><dd style="font-size:15px">대전광역시 유성구 신성로 68번길 31, 101호</dd></div>
         </dl>
       </div>
@@ -300,8 +409,8 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
         <label>담당자<input id="f-name" name="name" autocomplete="name" required></label>
         <label>연락처<input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
         <label>이메일<input id="f-email" name="email" type="email" autocomplete="email" required></label>
-        <label class="full">기판 종류
-          <select id="f-type" name="type"><option>Rigid PCB</option><option>Flexible PCB</option><option>아직 모르겠어요</option></select>
+        <label class="full">문의 종류
+          <select id="f-type" name="type"><option>Rigid PCB 제작</option><option>Flexible PCB 제작</option><option>PCB 설계</option><option>PCB 조립</option><option>Simulation</option><option>아직 모르겠어요</option></select>
         </label>
         <label class="full">문의 내용<textarea id="f-msg" name="message" placeholder="층수, 크기, 수량, 희망 납기 등을 적어 주세요"></textarea></label>
         <div class="full" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
@@ -326,47 +435,41 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   </div>
 </footer>
 
+<script src="products.js"></script>
 <script>
 (function(){
-  // 메뉴
   var t=document.getElementById('menuToggle'),m=document.getElementById('mainMenu');
   t.addEventListener('click',function(){var o=m.classList.toggle('open');t.setAttribute('aria-expanded',o)});
   m.addEventListener('click',function(e){if(e.target.tagName==='A'){m.classList.remove('open');t.setAttribute('aria-expanded','false')}});
 
-  // 제작 사례
-  var cases=[
-    ['A-BASE-RF-G',['rf'],'RF 베이스 보드'],
-    ['A-PUSE-MEASURE',['test'],'측정용 보드'],
-    ['A-WAVE-K-X',['rf'],'고주파 보드'],
-    ['A-Rx-COB-TEST',['opt','test'],'수신부 COB 시험 보드'],
-    ['IBR LR SYSTEM Board',['opt'],'시스템 보드'],
-    ['A-HSBX4-TEST',['opt','test'],'고속 신호 시험 보드'],
-    ['A-RF-LPDSM',['rf'],'RF 보드'],
-    ['A-SPDI-K-RF2',['rf'],'RF 보드'],
-    ['A-SPDI-U-RF1',['rf'],'RF 보드'],
-    ['A-TLINE-SUS-K',['rf'],'전송선로 보드'],
-    ['A-TIA-T3 B/D',['opt'],'TIA 보드'],
-    ['PAM-4 100G ROSA EVB',['opt','test'],'광수신 모듈 평가 보드']
-  ];
-  var list=document.getElementById('caseList');
-  function render(f){
+  var products=window.AMOS_PRODUCTS||[],list=document.getElementById('caseList'),more=document.getElementById('caseMore'),countEl=document.getElementById('caseCount'),search=document.getElementById('caseSearch');
+  var state={f:'all',q:'',shown:12};
+  function render(){
+    var q=state.q.toLowerCase();
+    var hits=products.filter(function(p){return (state.f==='all'||p[0]===state.f)&&(!q||(p[1]+' '+p[2]).toLowerCase().indexOf(q)>-1)});
     list.innerHTML='';
-    cases.filter(function(c){return f==='all'||c[1].indexOf(f)>-1}).forEach(function(c){
-      var el=document.createElement('div');el.className='case';
-      el.innerHTML='<span class="pad"><i></i></span><div><b></b><span></span></div>';
-      el.querySelector('b').textContent=c[0];el.querySelector('div span').textContent=c[2];
+    hits.slice(0,state.shown).forEach(function(p){
+      var el=document.createElement('article');el.className='case';
+      el.innerHTML='<div class="ph"><img loading="lazy" alt=""></div><div class="tx"><span class="grp"></span><b></b><span class="sp"></span></div>';
+      var img=el.querySelector('img');img.src=p[3];img.alt=p[1]+' 보드 사진';
+      el.querySelector('.grp').textContent=p[0]==='r'?'RIGID':'FLEXIBLE';
+      el.querySelector('b').textContent=p[1];el.querySelector('.sp').textContent=p[2];
       list.appendChild(el);
     });
+    if(!hits.length){list.innerHTML='<p class="empty">검색 결과가 없습니다. 다른 품명이나 재질로 찾아보세요.</p>'}
+    countEl.textContent='총 '+hits.length+'개 중 '+Math.min(state.shown,hits.length)+'개 표시';
+    more.hidden=hits.length<=state.shown;
   }
-  render('all');
+  render();
+  more.addEventListener('click',function(){state.shown+=12;render()});
+  search.addEventListener('input',function(){state.q=search.value.trim();state.shown=12;render()});
   document.querySelectorAll('.filters button').forEach(function(b){
     b.addEventListener('click',function(){
       document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false')});
-      b.setAttribute('aria-pressed','true');render(b.dataset.f);
+      b.setAttribute('aria-pressed','true');state.f=b.dataset.f;state.shown=12;render();
     });
   });
 
-  // 견적 가이드
   var quiz=document.getElementById('quiz'),ans={};
   var Q=[
     {k:'type',q:'어떤 기판이 필요하세요?',o:[['rigid','단단한 일반 기판 (Rigid)'],['flex','휘어지거나 접히는 기판 (Flexible)'],['unknown','아직 잘 모르겠어요']]},
@@ -380,17 +483,16 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   }
   function result(){
     var title={rigid:'Rigid PCB 제작',flex:'Flexible PCB(FPCB) 제작',unknown:'상담 후 기판 종류 결정'}[ans.type];
-    var desc={rf:'RF 보드는 기판 재질과 임피던스 조건이 중요합니다.',opt:'고속 신호 보드는 층 구성과 배선 길이 조건을 함께 알려 주세요.',test:'시험·평가 보드는 커넥터와 측정 포인트 위치를 함께 알려 주세요.',etc:'기본 사양만 알려 주셔도 견적을 드릴 수 있습니다.'}[ans.use];
-    var items=['거버(Gerber) 파일 또는 설계 파일','기판 크기 · 층수 · 두께','제작 수량과 희망 납기'];
+    var desc={rf:'RF 보드는 기판 재질과 임피던스 조건이 중요합니다. 필요하면 Impedance Analysis도 함께 받아 보세요.',opt:'고속 신호 보드는 층 구성과 배선 길이 조건이 중요합니다. Delay·Noise 해석을 함께 요청할 수 있습니다.',test:'시험·평가 보드는 커넥터와 측정 포인트 위치를 함께 알려 주세요.',etc:'기본 사양만 알려 주셔도 견적을 드릴 수 있습니다.'}[ans.use];
+    var items=['거버(Gerber) 파일 또는 설계 파일','기판 크기 · 층수 · 두께','제작 수량과 희망 납기','표면처리 방식 (HASL · Gold Plating · Preflux)'];
     if(ans.use==='rf'||ans.use==='opt')items.push('원하는 기판 재질과 임피던스 조건');
     if(ans.type==='flex')items.push('굴곡 부위와 보강판 위치');
     quiz.innerHTML=steps(2)+'<div class="result"><h4>'+title+'</h4><p>'+desc+' 아래 자료를 준비해 문의해 주세요.</p><ul class="checklist">'+items.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="row-btns"><a class="btn btn-copper" href="#contact">이 내용으로 문의하기</a><button class="btn btn-line" type="button" id="restart">다시 고르기</button></div></div>';
-    var sel=document.getElementById('f-type');sel.selectedIndex={rigid:0,flex:1,unknown:2}[ans.type];
+    document.getElementById('f-type').selectedIndex={rigid:0,flex:1,unknown:5}[ans.type];
     document.getElementById('restart').addEventListener('click',function(){ans={};ask(0)});
   }
   ask(0);
 
-  // 복사
   document.querySelectorAll('.copy').forEach(function(b){
     b.addEventListener('click',function(){
       var el=document.getElementById(b.dataset.copy),txt=el.textContent;
@@ -400,7 +502,6 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     });
   });
 
-  // 문의 폼 (시안: 실제 전송 없음)
   document.getElementById('quoteForm').addEventListener('submit',function(e){
     e.preventDefault();
     var msg=document.getElementById('formMsg'),need=['f-company','f-name','f-email'].filter(function(id){return !document.getElementById(id).value.trim()});
@@ -408,7 +509,6 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     msg.textContent='시안 페이지라 실제로 전송되지는 않습니다. 공개할 때 폼 서비스와 연결합니다.';
   });
 
-  // 히어로 배선 애니메이션
   var cv=document.getElementById('traces'),ctx=cv.getContext('2d'),W,H,paths=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function build(){
     var r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);

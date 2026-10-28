@@ -1,0 +1,441 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AMOS PCB 리뉴얼</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@300;400;500;700&display=swap">
+<style>
+/* Layout: 가비아식 기업 랜딩 구조(헤더 · 히어로 · 사업분야 · 사례 · 가이드 · 문의) 위에, 기판 위 구리 배선을 모티프로 한 다크 히어로 */
+:root{
+  --substrate:#0e1a2b;      /* 기판(다크 네이비) */
+  --substrate-2:#152539;
+  --copper:#b8733a;         /* 구리 배선 */
+  --copper-soft:#e9d3bf;
+  --silk:#f4f6f8;           /* 실크스크린 흰색 */
+  --bg:#f6f7f9;
+  --surface:#ffffff;
+  --fg:#16202d;
+  --muted:#5b6878;
+  --line:#dde2e9;
+  --chip:#eef1f5;
+  --font-sans:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --font-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b1420;--surface:#121e2e;--fg:#e8edf3;--muted:#9aa8b8;--line:#22324a;--chip:#1a2a3f;--copper:#d08a4e;--copper-soft:#3a2a1d;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0b1420;--surface:#121e2e;--fg:#e8edf3;--muted:#9aa8b8;--line:#22324a;--chip:#1a2a3f;--copper:#d08a4e;--copper-soft:#3a2a1d;color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--bg);color:var(--fg);font-family:var(--font-sans);font-size:16px;line-height:1.65;word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:10;background:var(--substrate)}
+a{color:inherit}
+.wrap{max-width:1160px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+h1,h2,h3{text-wrap:balance;line-height:1.3;margin:0}
+.eyebrow{font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--copper)}
+:focus-visible{outline:2px solid var(--copper);outline-offset:3px}
+
+/* Header */
+header.top{position:sticky;top:env(safe-area-inset-top,0px);z-index:9;background:var(--substrate);color:var(--silk);border-bottom:1px solid #22344d}
+.top .wrap{display:flex;align-items:center;gap:24px;min-height:64px}
+.logo{display:flex;align-items:center;gap:10px;text-decoration:none;font-weight:700;letter-spacing:.08em;font-size:20px}
+.logo svg{flex:none}
+nav.menu{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+nav.menu a{text-decoration:none;font-size:15px;padding:8px 12px;border-radius:6px;color:#c9d3df}
+nav.menu a:hover{color:var(--silk);background:#1b2c43}
+.btn{display:inline-flex;align-items:center;gap:8px;font:500 15px var(--font-sans);padding:11px 18px;border-radius:8px;border:1px solid transparent;cursor:pointer;text-decoration:none}
+.btn-copper{background:var(--copper);color:#fff}
+.btn-copper:hover{filter:brightness(1.08)}
+.btn-ghost{border-color:#3a4f6b;color:var(--silk);background:transparent}
+.btn-ghost:hover{border-color:var(--copper)}
+.menu-toggle{display:none;margin-left:auto;background:none;border:1px solid #3a4f6b;color:var(--silk);border-radius:6px;padding:6px 10px;font:inherit}
+@media (max-width:860px){
+  .menu-toggle{display:inline-block}
+  nav.menu{display:none;position:absolute;left:0;right:0;top:64px;background:var(--substrate);flex-direction:column;padding:8px max(16px,env(safe-area-inset-right,0px)) 16px max(16px,env(safe-area-inset-left,0px));border-bottom:1px solid #22344d}
+  nav.menu.open{display:flex}
+  .top .head-cta{display:none}
+}
+
+/* Hero */
+.hero{position:relative;background:var(--substrate);color:var(--silk);overflow:hidden}
+.hero canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.9}
+.hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,var(--substrate) 30%,rgba(14,26,43,.55) 65%,rgba(14,26,43,.2));pointer-events:none}
+.hero .wrap{position:relative;z-index:1;padding-block:96px 88px}
+.hero h1{font-size:clamp(30px,5vw,54px);font-weight:700;max-width:16em;margin-top:18px;letter-spacing:-.01em}
+.hero h1 em{font-style:normal;color:var(--copper)}
+.hero p.lead{max-width:34em;color:#b9c5d3;font-size:clamp(16px,2vw,19px);font-weight:300;margin:22px 0 34px}
+.hero .actions{display:flex;gap:12px;flex-wrap:wrap}
+.facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1px;background:#22344d;border:1px solid #22344d;border-radius:10px;overflow:hidden;margin-top:64px;max-width:760px}
+.facts div{background:rgba(14,26,43,.92);padding:18px 20px}
+.facts b{display:block;font-size:22px;font-weight:500}
+.facts span{font-size:13px;color:#93a3b6}
+@media (max-width:620px){.facts{grid-template-columns:1fr}}
+
+/* Sections */
+section.block{padding-block:88px}
+.sec-head{display:flex;justify-content:space-between;align-items:end;gap:24px;flex-wrap:wrap;margin-bottom:40px}
+.sec-head h2{font-size:clamp(26px,3.4vw,36px);margin-top:10px}
+.sec-head p{color:var(--muted);max-width:30em;margin:0}
+
+/* Business cards */
+.biz{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:20px}
+@media (max-width:980px){.biz{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.biz{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:26px 24px;display:flex;flex-direction:column;gap:14px;text-decoration:none;transition:border-color .2s,transform .2s}
+.card:hover{border-color:var(--copper);transform:translateY(-2px)}
+@media (prefers-reduced-motion:reduce){.card{transition:none}.card:hover{transform:none}}
+.card .code{font-family:var(--font-mono);font-size:12px;color:var(--copper);letter-spacing:.08em}
+.card h3{font-size:21px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.card ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:6px;font-size:14px;border-top:1px dashed var(--line);padding-top:14px;margin-top:auto}
+.card li::before{content:"— ";color:var(--copper)}
+
+/* Cases */
+.cases-bg{background:var(--surface);border-block:1px solid var(--line)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:24px}
+.filters button{font:500 14px var(--font-sans);padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--fg);cursor:pointer}
+.filters button[aria-pressed="true"]{background:var(--substrate);border-color:var(--substrate);color:var(--silk)}
+:root[data-theme="dark"] .filters button[aria-pressed="true"]{background:var(--copper);border-color:var(--copper)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .filters button[aria-pressed="true"]{background:var(--copper);border-color:var(--copper)}}
+.case-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.case-list{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.case-list{grid-template-columns:1fr}}
+.case{display:flex;align-items:center;gap:14px;padding:16px 18px;border:1px solid var(--line);border-radius:10px;background:var(--bg);min-width:0}
+.case .pad{flex:none;width:40px;height:40px;border-radius:8px;background:var(--substrate);display:grid;place-items:center}
+.case .pad i{width:12px;height:12px;border-radius:50%;border:3px solid var(--copper);display:block}
+.case div{min-width:0}
+.case b{display:block;font-family:var(--font-mono);font-weight:500;font-size:15px;overflow-wrap:anywhere}
+.case span{font-size:13px;color:var(--muted)}
+.note{font-size:13px;color:var(--muted);margin-top:18px}
+
+/* Guide (quiz) */
+.guide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:40px;align-items:start}
+@media (max-width:860px){.guide{grid-template-columns:1fr}}
+.quiz{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:28px}
+.steps{display:flex;gap:8px;margin-bottom:22px;font-family:var(--font-mono);font-size:12px}
+.steps span{padding:4px 10px;border-radius:999px;background:var(--chip);color:var(--muted)}
+.steps span.on{background:var(--copper);color:#fff}
+.quiz h3{font-size:20px;margin-bottom:16px}
+.opts{display:grid;gap:10px}
+.opts button{text-align:left;font:400 15px var(--font-sans);color:var(--fg);padding:14px 16px;border-radius:10px;border:1px solid var(--line);background:var(--bg);cursor:pointer;display:flex;gap:12px;align-items:center}
+.opts button:hover{border-color:var(--copper)}
+.opts button b{font-family:var(--font-mono);font-weight:500;color:var(--copper);flex:none}
+.result h4{margin:0 0 8px;font-size:22px}
+.result p{color:var(--muted);margin:0 0 14px}
+.checklist{list-style:none;padding:0;margin:0 0 20px;display:grid;gap:8px}
+.checklist li{display:flex;gap:10px;font-size:15px}
+.checklist li::before{content:"";flex:none;width:14px;height:14px;margin-top:5px;border:2px solid var(--copper);border-radius:3px}
+.row-btns{display:flex;gap:10px;flex-wrap:wrap}
+.btn-line{border-color:var(--line);color:var(--fg);background:transparent}
+.btn-line:hover{border-color:var(--copper)}
+
+/* Notice */
+.notice{list-style:none;padding:0;margin:0;border-top:2px solid var(--fg)}
+.notice li{display:flex;justify-content:space-between;gap:16px;padding:18px 4px;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.notice time{font-family:var(--font-mono);font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.tag-ex{font-size:12px;padding:2px 8px;border-radius:4px;background:var(--chip);color:var(--muted);margin-right:8px}
+
+/* Contact */
+.contact{background:var(--substrate);color:var(--silk)}
+.contact .grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:48px}
+@media (max-width:860px){.contact .grid{grid-template-columns:1fr}}
+.contact h2{font-size:clamp(26px,3.4vw,36px);margin:10px 0 16px}
+.contact p{color:#b9c5d3}
+.info{display:grid;gap:12px;margin-top:28px}
+.info div{display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.info dt{font-family:var(--font-mono);font-size:12px;letter-spacing:.1em;color:var(--copper);width:56px}
+.info dd{margin:0;font-size:17px;font-variant-numeric:tabular-nums;user-select:all}
+.copy{font:400 12px var(--font-sans);background:none;border:1px solid #3a4f6b;color:#c9d3df;border-radius:5px;padding:3px 8px;cursor:pointer}
+form.f{background:var(--substrate-2);border:1px solid #22344d;border-radius:14px;padding:28px;display:grid;gap:14px;grid-template-columns:1fr 1fr}
+form.f .full{grid-column:1/-1}
+@media (max-width:560px){form.f{grid-template-columns:1fr}}
+form.f label{display:grid;gap:6px;font-size:14px;color:#c9d3df}
+form.f input,form.f select,form.f textarea{font:400 15px var(--font-sans);padding:11px 12px;border-radius:8px;border:1px solid #33475f;background:#0e1a2b;color:var(--silk);width:100%;min-width:0}
+form.f textarea{min-height:110px;resize:vertical}
+.form-msg{font-size:14px;color:var(--copper-soft);margin:0}
+:root[data-theme="dark"] .form-msg{color:#e2b48a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .form-msg{color:#e2b48a}}
+
+footer{background:#09121e;color:#8796a8;font-size:14px}
+footer .wrap{padding-block:36px;display:grid;gap:10px}
+footer b{color:#d4dce6;letter-spacing:.08em}
+footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="AMOS 홈">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><rect x="1" y="1" width="26" height="26" rx="5" fill="none" stroke="#b8733a" stroke-width="2"/><path d="M7 20 L7 13 L14 7 L21 13 L21 20" fill="none" stroke="#f4f6f8" stroke-width="2"/><circle cx="14" cy="15" r="2.6" fill="#b8733a"/></svg>
+      AMOS
+    </a>
+    <button class="menu-toggle" id="menuToggle" aria-expanded="false" aria-controls="mainMenu">메뉴</button>
+    <nav class="menu" id="mainMenu">
+      <a href="#about">회사소개</a>
+      <a href="#business">사업분야</a>
+      <a href="#cases">제작사례</a>
+      <a href="#guide">견적가이드</a>
+      <a href="#notice">공지사항</a>
+    </nav>
+    <a class="btn btn-copper head-cta" href="#contact">견적 문의</a>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" id="about">
+    <canvas id="traces" aria-hidden="true"></canvas>
+    <div class="wrap">
+      <span class="eyebrow">AMOS · Rigid &amp; Flexible PCB</span>
+      <h1>정밀한 회로를 위한<br><em>PCB 파트너</em>, AMOS</h1>
+      <p class="lead">RF·광통신 시험 보드부터 휘어지는 FPCB까지. 연구소와 개발팀이 설계한 회로를 실제 보드로 만들어 드립니다.</p>
+      <div class="actions">
+        <a class="btn btn-copper" href="#contact">견적 문의하기</a>
+        <a class="btn btn-ghost" href="#business">사업분야 보기</a>
+      </div>
+      <div class="facts">
+        <div><b>Rigid PCB</b><span>설계사양 · 제품 10개 분류</span></div>
+        <div><b>Flexible PCB</b><span>FPCB 소개 · 제품 3개 분류</span></div>
+        <div><b>대전 유성구</b><span>신성로 68번길 31, 101호</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block" id="business">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Business</span><h2>AMOS 사업분야</h2></div>
+        <p>기존 홈페이지의 메뉴를 네 개의 분야로 정리했습니다. 필요한 보드 종류를 골라 바로 확인하세요.</p>
+      </div>
+      <div class="biz">
+        <a class="card" href="#cases">
+          <span class="code">01 · RIGID</span>
+          <h3>Rigid PCB</h3>
+          <p>RF, 고속 신호, 시험·평가용 보드 등 단단한 기판 제작</p>
+          <ul><li>설계사양</li><li>제품 분류 1~10</li></ul>
+        </a>
+        <a class="card" href="#guide">
+          <span class="code">02 · FLEXIBLE</span>
+          <h3>Flexible PCB</h3>
+          <p>좁은 공간과 굴곡이 필요한 연결부를 위한 FPCB 제작</p>
+          <ul><li>FPCB 소개</li><li>제품 분류 1~3</li></ul>
+        </a>
+        <a class="card" href="#cases">
+          <span class="code">03 · CASES</span>
+          <h3>제작 사례</h3>
+          <p>RF 모듈, 광통신 수신부 평가 보드 등 실제 제작한 보드</p>
+          <ul><li>RF · 고주파 보드</li><li>광통신 · 테스트 보드</li></ul>
+        </a>
+        <a class="card" href="#contact">
+          <span class="code">04 · SUPPORT</span>
+          <h3>고객센터</h3>
+          <p>견적과 제작 상담, 공지사항을 한곳에서 확인</p>
+          <ul><li>견적 문의</li><li>공지사항</li></ul>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="block cases-bg" id="cases">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Cases</span><h2>제작 사례</h2></div>
+        <p>Rigid 제품 1 분류에 등록된 보드입니다. 용도별로 걸러 볼 수 있습니다.</p>
+      </div>
+      <div class="filters" role="group" aria-label="사례 분류">
+        <button type="button" data-f="all" aria-pressed="true">전체</button>
+        <button type="button" data-f="rf" aria-pressed="false">RF · 고주파</button>
+        <button type="button" data-f="opt" aria-pressed="false">광통신 · 고속</button>
+        <button type="button" data-f="test" aria-pressed="false">시험 · 평가</button>
+      </div>
+      <div class="case-list" id="caseList"></div>
+      <p class="note">※ 사례 사진과 사양은 기존 홈페이지 이미지에서 옮겨 와야 합니다. 시안에서는 보드 이름만 넣었습니다.</p>
+    </div>
+  </section>
+
+  <section class="block" id="guide">
+    <div class="wrap guide">
+      <div>
+        <span class="eyebrow">Quote guide</span>
+        <h2 style="font-size:clamp(26px,3.4vw,36px);margin-top:10px">두 가지만 고르면<br>준비할 자료를 알려드려요</h2>
+        <p style="color:var(--muted);margin-top:16px;max-width:26em">처음 PCB를 맡기는 분도 어떤 자료를 보내면 되는지 바로 알 수 있도록 만든 견적 가이드입니다.</p>
+      </div>
+      <div class="quiz" id="quiz" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section class="block cases-bg" id="notice">
+    <div class="wrap">
+      <div class="sec-head">
+        <div><span class="eyebrow">Notice</span><h2>공지사항</h2></div>
+        <p>기존 게시판 글을 옮겨 올 자리입니다.</p>
+      </div>
+      <ul class="notice">
+        <li><span><span class="tag-ex">예시</span>홈페이지가 새롭게 바뀌었습니다</span><time datetime="2026-11">2026. 11</time></li>
+        <li><span><span class="tag-ex">예시</span>연말 휴무 및 출고 일정 안내</span><time datetime="2026-12">2026. 12</time></li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="block contact" id="contact">
+    <div class="wrap grid">
+      <div>
+        <span class="eyebrow">Contact</span>
+        <h2>보드 제작, 상담부터 시작하세요</h2>
+        <p>설계 파일과 수량을 알려주시면 사양을 검토해 연락드립니다.</p>
+        <dl class="info">
+          <div><dt>TEL</dt><dd id="tel">042-861-3402</dd><button class="copy" type="button" data-copy="tel">복사</button></div>
+          <div><dt>FAX</dt><dd>042-362-3400</dd></div>
+          <div><dt>E-MAIL</dt><dd id="mail">amos@amos3000.co.kr</dd><button class="copy" type="button" data-copy="mail">복사</button></div>
+          <div><dt>ADDR</dt><dd style="font-size:15px">대전광역시 유성구 신성로 68번길 31, 101호</dd></div>
+        </dl>
+      </div>
+      <form class="f" id="quoteForm" novalidate>
+        <label>회사·기관명<input id="f-company" name="company" autocomplete="organization" required></label>
+        <label>담당자<input id="f-name" name="name" autocomplete="name" required></label>
+        <label>연락처<input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
+        <label>이메일<input id="f-email" name="email" type="email" autocomplete="email" required></label>
+        <label class="full">기판 종류
+          <select id="f-type" name="type"><option>Rigid PCB</option><option>Flexible PCB</option><option>아직 모르겠어요</option></select>
+        </label>
+        <label class="full">문의 내용<textarea id="f-msg" name="message" placeholder="층수, 크기, 수량, 희망 납기 등을 적어 주세요"></textarea></label>
+        <div class="full" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-copper" type="submit">문의 보내기</button>
+          <p class="form-msg" id="formMsg" role="status"></p>
+        </div>
+      </form>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <b>AMOS</b>
+    <div class="meta">
+      <span>상호 AMOS</span><span>대표 최낙환</span><span>사업자등록번호 305-19-57322</span>
+    </div>
+    <div class="meta">
+      <span>대전광역시 유성구 신성로 68번길 31, 101호</span><span>TEL 042-861-3402</span><span>FAX 042-362-3400</span><span>amos@amos3000.co.kr</span>
+    </div>
+    <span>© AMOS. All rights reserved.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  // 메뉴
+  var t=document.getElementById('menuToggle'),m=document.getElementById('mainMenu');
+  t.addEventListener('click',function(){var o=m.classList.toggle('open');t.setAttribute('aria-expanded',o)});
+  m.addEventListener('click',function(e){if(e.target.tagName==='A'){m.classList.remove('open');t.setAttribute('aria-expanded','false')}});
+
+  // 제작 사례
+  var cases=[
+    ['A-BASE-RF-G',['rf'],'RF 베이스 보드'],
+    ['A-PUSE-MEASURE',['test'],'측정용 보드'],
+    ['A-WAVE-K-X',['rf'],'고주파 보드'],
+    ['A-Rx-COB-TEST',['opt','test'],'수신부 COB 시험 보드'],
+    ['IBR LR SYSTEM Board',['opt'],'시스템 보드'],
+    ['A-HSBX4-TEST',['opt','test'],'고속 신호 시험 보드'],
+    ['A-RF-LPDSM',['rf'],'RF 보드'],
+    ['A-SPDI-K-RF2',['rf'],'RF 보드'],
+    ['A-SPDI-U-RF1',['rf'],'RF 보드'],
+    ['A-TLINE-SUS-K',['rf'],'전송선로 보드'],
+    ['A-TIA-T3 B/D',['opt'],'TIA 보드'],
+    ['PAM-4 100G ROSA EVB',['opt','test'],'광수신 모듈 평가 보드']
+  ];
+  var list=document.getElementById('caseList');
+  function render(f){
+    list.innerHTML='';
+    cases.filter(function(c){return f==='all'||c[1].indexOf(f)>-1}).forEach(function(c){
+      var el=document.createElement('div');el.className='case';
+      el.innerHTML='<span class="pad"><i></i></span><div><b></b><span></span></div>';
+      el.querySelector('b').textContent=c[0];el.querySelector('div span').textContent=c[2];
+      list.appendChild(el);
+    });
+  }
+  render('all');
+  document.querySelectorAll('.filters button').forEach(function(b){
+    b.addEventListener('click',function(){
+      document.querySelectorAll('.filters button').forEach(function(x){x.setAttribute('aria-pressed','false')});
+      b.setAttribute('aria-pressed','true');render(b.dataset.f);
+    });
+  });
+
+  // 견적 가이드
+  var quiz=document.getElementById('quiz'),ans={};
+  var Q=[
+    {k:'type',q:'어떤 기판이 필요하세요?',o:[['rigid','단단한 일반 기판 (Rigid)'],['flex','휘어지거나 접히는 기판 (Flexible)'],['unknown','아직 잘 모르겠어요']]},
+    {k:'use',q:'보드는 어디에 쓰이나요?',o:[['rf','RF · 고주파 회로'],['opt','광통신 · 고속 신호'],['test','시험 · 평가용 보드'],['etc','일반 제어 · 기타']]}
+  ];
+  function steps(i){return '<div class="steps">'+['Q1 기판 종류','Q2 용도','결과'].map(function(s,j){return '<span class="'+(j===i?'on':'')+'">'+s+'</span>'}).join('')+'</div>'}
+  function ask(i){
+    var q=Q[i];
+    quiz.innerHTML=steps(i)+'<h3>'+q.q+'</h3><div class="opts">'+q.o.map(function(o,j){return '<button type="button" data-v="'+o[0]+'"><b>'+(j+1)+'</b>'+o[1]+'</button>'}).join('')+'</div>';
+    quiz.querySelectorAll('.opts button').forEach(function(b){b.addEventListener('click',function(){ans[q.k]=b.dataset.v;i+1<Q.length?ask(i+1):result()})});
+  }
+  function result(){
+    var title={rigid:'Rigid PCB 제작',flex:'Flexible PCB(FPCB) 제작',unknown:'상담 후 기판 종류 결정'}[ans.type];
+    var desc={rf:'RF 보드는 기판 재질과 임피던스 조건이 중요합니다.',opt:'고속 신호 보드는 층 구성과 배선 길이 조건을 함께 알려 주세요.',test:'시험·평가 보드는 커넥터와 측정 포인트 위치를 함께 알려 주세요.',etc:'기본 사양만 알려 주셔도 견적을 드릴 수 있습니다.'}[ans.use];
+    var items=['거버(Gerber) 파일 또는 설계 파일','기판 크기 · 층수 · 두께','제작 수량과 희망 납기'];
+    if(ans.use==='rf'||ans.use==='opt')items.push('원하는 기판 재질과 임피던스 조건');
+    if(ans.type==='flex')items.push('굴곡 부위와 보강판 위치');
+    quiz.innerHTML=steps(2)+'<div class="result"><h4>'+title+'</h4><p>'+desc+' 아래 자료를 준비해 문의해 주세요.</p><ul class="checklist">'+items.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="row-btns"><a class="btn btn-copper" href="#contact">이 내용으로 문의하기</a><button class="btn btn-line" type="button" id="restart">다시 고르기</button></div></div>';
+    var sel=document.getElementById('f-type');sel.selectedIndex={rigid:0,flex:1,unknown:2}[ans.type];
+    document.getElementById('restart').addEventListener('click',function(){ans={};ask(0)});
+  }
+  ask(0);
+
+  // 복사
+  document.querySelectorAll('.copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var el=document.getElementById(b.dataset.copy),txt=el.textContent;
+      function done(){b.textContent='복사됨';setTimeout(function(){b.textContent='복사'},1500)}
+      function fallback(){var r=document.createRange();r.selectNodeContents(el);var s=getSelection();s.removeAllRanges();s.addRange(r);b.textContent='선택됨'}
+      try{navigator.clipboard.writeText(txt).then(done,fallback)}catch(e){fallback()}
+    });
+  });
+
+  // 문의 폼 (시안: 실제 전송 없음)
+  document.getElementById('quoteForm').addEventListener('submit',function(e){
+    e.preventDefault();
+    var msg=document.getElementById('formMsg'),need=['f-company','f-name','f-email'].filter(function(id){return !document.getElementById(id).value.trim()});
+    if(need.length){msg.textContent='회사·기관명, 담당자, 이메일을 입력해 주세요.';document.getElementById(need[0]).focus();return}
+    msg.textContent='시안 페이지라 실제로 전송되지는 않습니다. 공개할 때 폼 서비스와 연결합니다.';
+  });
+
+  // 히어로 배선 애니메이션
+  var cv=document.getElementById('traces'),ctx=cv.getContext('2d'),W,H,paths=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function build(){
+    var r=cv.getBoundingClientRect(),d=window.devicePixelRatio||1;W=r.width;H=r.height;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);
+    paths=[];var g=24,n=Math.round(W/38);
+    for(var i=0;i<n;i++){
+      var x=Math.round((W*0.35+Math.random()*W*0.7)/g)*g,y=Math.round(Math.random()*H/g)*g,p=[[x,y]],segs=3+Math.floor(Math.random()*4);
+      for(var s=0;s<segs;s++){var dir=Math.floor(Math.random()*3),len=g*(2+Math.floor(Math.random()*5));
+        if(dir===0)x+=len;else if(dir===1){x+=len;y+=len*(Math.random()<.5?-1:1)}else y+=len*(Math.random()<.5?-1:1);p.push([x,y])}
+      var L=0;for(var k=1;k<p.length;k++)L+=Math.hypot(p[k][0]-p[k-1][0],p[k][1]-p[k-1][1]);
+      paths.push({p:p,L:L,o:Math.random()*L,sp:.4+Math.random()*.8});
+    }
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    paths.forEach(function(t){
+      ctx.strokeStyle='rgba(184,115,58,.28)';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(t.p[0][0],t.p[0][1]);
+      t.p.forEach(function(q){ctx.lineTo(q[0],q[1])});ctx.stroke();
+      [t.p[0],t.p[t.p.length-1]].forEach(function(q){ctx.beginPath();ctx.arc(q[0],q[1],4,0,7);ctx.fillStyle='#0e1a2b';ctx.fill();ctx.strokeStyle='rgba(184,115,58,.6)';ctx.stroke()});
+      if(!reduce){t.o=(t.o+t.sp)%t.L;var rem=t.o;
+        for(var k=1;k<t.p.length;k++){var a=t.p[k-1],b=t.p[k],l=Math.hypot(b[0]-a[0],b[1]-a[1]);
+          if(rem<=l){var f=rem/l,px=a[0]+(b[0]-a[0])*f,py=a[1]+(b[1]-a[1])*f;ctx.beginPath();ctx.arc(px,py,2.4,0,7);ctx.fillStyle='#f0b57d';ctx.fill();break}rem-=l}}
+    });
+    if(!reduce)requestAnimationFrame(draw);
+  }
+  build();draw();
+  var to;addEventListener('resize',function(){clearTimeout(to);to=setTimeout(function(){build();if(reduce)draw()},200)});
+})();
+</script>
+</body>
+</html>

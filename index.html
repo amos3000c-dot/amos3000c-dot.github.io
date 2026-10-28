@@ -528,6 +528,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   var form=document.getElementById('quoteForm'),msg=document.getElementById('formMsg'),capA=2+Math.floor(Math.random()*8),capB=1+Math.floor(Math.random()*9);
   document.getElementById('capQ').textContent=capA+' + '+capB;
   if(/[?&]sent=1/.test(location.search)){msg.textContent='문의가 접수되었습니다. 확인 후 연락드리겠습니다.'}
+  try{var it=new URLSearchParams(location.search).get('item');if(it){var fm=document.getElementById('f-msg');if(!fm.value)fm.value='문의 제품: '+it+'\n수량: \n희망 납기: '}}catch(e){}
   form.addEventListener('submit',function(e){
     var val=function(id){return document.getElementById(id).value.trim()};
     var need=['f-company','f-name','f-email'].filter(function(id){return !val(id)}),fail='';

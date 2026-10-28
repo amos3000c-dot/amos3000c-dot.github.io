@@ -117,6 +117,39 @@ td.img img{width:96px;height:72px;object-fit:contain;background:#fff;border:1px 
 td.name{font-family:var(--font-mono);font-weight:500;overflow-wrap:anywhere;width:30%}
 td.spec{color:var(--muted)}
 .empty{color:var(--muted);padding:32px 0}
+.plink{color:inherit;text-decoration:none}
+.plink:hover{color:var(--copper);text-decoration:underline}
+.card,#tbody tr{cursor:pointer}
+.card:hover{border-color:var(--copper)}
+#tbody tr:hover td{background:var(--chip)}
+dialog.pd{border:0;padding:0;border-radius:14px;width:min(880px,calc(100vw - 32px));max-height:calc(100vh - 32px);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,16,28,.35)}
+dialog.pd::backdrop{background:rgba(8,16,28,.6)}
+.pd-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+@media (max-width:720px){.pd-in{grid-template-columns:1fr}}
+.pd-ph{background:#fff;display:grid;place-items:center;padding:28px;border-right:1px solid var(--line);min-height:300px}
+@media (max-width:720px){.pd-ph{border-right:0;border-bottom:1px solid var(--line);min-height:220px}}
+.pd-ph img{width:100%;max-width:400px;height:auto;max-height:340px;object-fit:contain;image-rendering:auto}
+.pd-tx{padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.pd-tx h2{font-family:var(--font-mono);font-size:22px;font-weight:500;overflow-wrap:anywhere;margin:0}
+.pd-price{font-family:var(--font-mono);font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}
+.pd-price small{font-family:var(--font-sans);font-size:13px;font-weight:400;color:var(--muted);margin-left:8px}
+.pd-spec{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);border-top:1px solid var(--line)}
+.pd-spec dt,.pd-spec dd{margin:0;padding:9px 0;border-bottom:1px solid var(--line);font-size:14px}
+.pd-spec dt{color:var(--muted);padding-right:20px;white-space:nowrap}
+.pd-spec dd{overflow-wrap:anywhere}
+.pd-act{display:flex;gap:10px;flex-wrap:wrap;margin-top:auto;padding-top:6px}
+.btn-line{border-color:var(--line);color:var(--fg);background:transparent}
+.btn-line:hover{border-color:var(--copper)}
+.pd-top{position:absolute;top:10px;right:10px;display:flex;gap:6px}
+.pd-top button{width:40px;height:40px;border-radius:999px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-size:18px;line-height:1;cursor:pointer}
+.pd-top button:hover{border-color:var(--copper)}
+.pd-top button[disabled]{opacity:.35;cursor:default}
+.pd-more{grid-column:1/-1;border-top:1px solid var(--line);padding:18px 28px 24px}
+.pd-more h3{font-size:14px;color:var(--muted);font-weight:500;margin:0 0 10px}
+.pd-thumbs{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px}
+.pd-thumbs a{flex:none;width:112px;text-decoration:none;color:var(--fg);font-family:var(--font-mono);font-size:11px;line-height:1.35}
+.pd-thumbs img{width:112px;height:84px;object-fit:contain;background:#fff;border:1px solid var(--line);border-radius:8px;display:block;margin-bottom:4px}
+.pd-thumbs a:hover img{border-color:var(--copper)}
 
 .cta{margin-top:40px;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:22px 24px;display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap}
 .cta p{margin:0}
@@ -190,6 +223,33 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   </main>
 </div>
 
+<dialog class="pd" id="pd" aria-labelledby="pdName">
+  <div style="position:relative">
+    <div class="pd-top">
+      <button type="button" id="pdPrev" aria-label="이전 제품">‹</button>
+      <button type="button" id="pdNext" aria-label="다음 제품">›</button>
+      <button type="button" id="pdClose" aria-label="닫기">×</button>
+    </div>
+    <div class="pd-in">
+      <div class="pd-ph"><img id="pdImg" alt=""></div>
+      <div class="pd-tx">
+        <span class="tag" id="pdTag"></span>
+        <h2 id="pdName"></h2>
+        <div class="pd-price" id="pdPrice"></div>
+        <dl class="pd-spec" id="pdSpec"></dl>
+        <div class="pd-act">
+          <a class="btn btn-copper" id="pdAsk" href="index.html#contact">이 제품으로 견적 문의</a>
+          <button type="button" class="btn btn-line" id="pdBack">목록으로</button>
+        </div>
+      </div>
+      <div class="pd-more" id="pdMore">
+        <h3 id="pdMoreTitle">같은 분류의 다른 제품</h3>
+        <div class="pd-thumbs" id="pdThumbs"></div>
+      </div>
+    </div>
+  </div>
+</dialog>
+
 <footer>
   <div class="wrap">
     <img src="logo.svg" alt="Amos" width="78" height="24">
@@ -209,7 +269,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
   var t=document.getElementById('menuToggle'),m=document.getElementById('mainMenu');
   t.addEventListener('click',function(){var o=m.classList.toggle('open');t.setAttribute('aria-expanded',o)});
 
-  var all=(window.AMOS_PRODUCTS||[]).map(function(p){var c=p[3].match(/img\/([rf]\d+)-/)[1];return {g:p[0],cat:c,name:p[1],spec:p[2],img:p[3],price:p[4]}});
+  var all=(window.AMOS_PRODUCTS||[]).map(function(p){var c=p[3].match(/img\/([rf]\d+)-/)[1];return {g:p[0],cat:c,name:p[1],spec:p[2],img:p[3],price:p[4],id:p[3].replace(/^img\/|\.jpg$/g,'')}});
   var cats=[{id:'all',label:'전체',group:''}];
   var rigid=[],flex=[];
   for(var i=1;i<=10;i++)rigid.push({id:'r'+i,label:'제품 '+i,group:'Rigid PCB'});
@@ -238,19 +298,19 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     document.getElementById('crumbCat').textContent=label(cat);
     document.getElementById('count').textContent=hits.length+'개 제품'+(q?' · "'+q+'" 검색 결과':'');
     side.querySelectorAll('a[data-cat]').forEach(function(a){a.setAttribute('aria-current',a.dataset.cat===cat?'true':'false')});
-    grid.innerHTML='';tbody.innerHTML='';
+    lastHits=hits;grid.innerHTML='';tbody.innerHTML='';
     hits.forEach(function(p){
       var tag=p.g==='r'?'RIGID':'FLEXIBLE';
       var c=document.createElement('article');c.className='card';
       c.innerHTML='<div class="ph"><img loading="lazy"></div><div class="tx"><span class="tag"></span><b></b><span class="sp"></span><span class="pr"></span></div>';
       var im=c.querySelector('img');im.src=p.img;im.alt=p.name+' 보드 사진';
-      c.querySelector('.tag').textContent=tag+' · 제품 '+p.cat.slice(1);c.querySelector('b').textContent=p.name;c.querySelector('.sp').textContent=p.spec;
+      c.querySelector('.tag').textContent=tag+' · 제품 '+p.cat.slice(1);var pl=document.createElement('a');pl.className='plink';pl.href='#'+p.id;pl.textContent=p.name;c.querySelector('b').appendChild(pl);c.dataset.id=p.id;c.querySelector('.sp').textContent=p.spec;
       var won=p.price?p.price.toLocaleString('ko-KR')+'원':'';if(won)c.querySelector('.pr').innerHTML=won+'<small>VAT 포함</small>';
       grid.appendChild(c);
       var tr=document.createElement('tr');
       tr.innerHTML='<td class="img"><img loading="lazy"></td><td class="name"></td><td class="spec"></td><td class="num"></td>';
       var ti=tr.querySelector('img');ti.src=p.img;ti.alt=p.name+' 보드 사진';
-      tr.querySelector('.name').textContent=p.name;tr.querySelector('.spec').textContent=p.spec;tr.querySelector('.num').textContent=won;
+      var tl=document.createElement('a');tl.className='plink';tl.href='#'+p.id;tl.textContent=p.name;tr.querySelector('.name').appendChild(tl);tr.dataset.id=p.id;tr.querySelector('.spec').textContent=p.spec;tr.querySelector('.num').textContent=won;
       tbody.appendChild(tr);
     });
     if(!hits.length){grid.innerHTML='<p class="empty">찾는 제품이 없습니다. 다른 품명이나 재질로 검색해 보세요.</p>'}
@@ -258,8 +318,36 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     document.getElementById('vGrid').setAttribute('aria-pressed',view==='grid');
     document.getElementById('vTable').setAttribute('aria-pressed',view==='table');
   }
-  function fromHash(){var h=location.hash.slice(1);cat=/^(r([1-9]|10)|f[1-3])$/.test(h)?h:'all';if(cat!=='all'){var gb=side.querySelector('.grp-btn[data-g="'+cat[0]+'"]');if(gb)setOpen(gb,true)}render()}
-  addEventListener('hashchange',function(){fromHash();window.scrollTo({top:0})});
+  var lastHits=all;
+  function fromHash(){var h=location.hash.slice(1),pm=h.match(/^([rf]\d+)-\d\d$/),prod=pm?all.filter(function(p){return p.id===h})[0]:null;
+    if(prod){if(cat!=='all'&&cat!==prod.cat)cat=prod.cat;}else{cat=/^(r([1-9]|10)|f[1-3])$/.test(h)?h:'all'}
+    if(cat!=='all'){var gb=side.querySelector('.grp-btn[data-g="'+cat[0]+'"]');if(gb)setOpen(gb,true)}
+    render();if(prod){openPd(prod)}else if(pd.open){pd.close()}}
+  var pd=document.getElementById('pd'),curPd=null;
+  function specRows(s){return s.split(/,\s*|\s\/\s/).filter(Boolean).map(function(x){var k='특징',v=x.trim(),m=v.match(/^(Material|재질)\s*:\s*(.+)$/i);
+    if(m){k='재질';v=m[2]}else if(/\d\s*[×x*]\s*\d.*mm/i.test(v)){k='크기'}else if(/layer|^out-\d+L$|\d+L$/i.test(v)){k='층 구성'}else if(/^(ENEPIG|HASL|Gold|Palladium|soft gold|Plasma)/i.test(v)){k='표면처리'}return [k,v]})}
+  function openPd(p){curPd=p;var won=p.price?p.price.toLocaleString('ko-KR')+'원':'가격 문의';var unit=['r2-09','r9-14','r10-02','r10-03','r10-04','r10-05'].indexOf(p.id)>-1?'SET':'EA';
+    document.getElementById('pdImg').src=p.img;document.getElementById('pdImg').alt=p.name+' 보드 사진';
+    document.getElementById('pdTag').textContent=(p.g==='r'?'RIGID PCB':'FLEXIBLE PCB')+' · 제품 '+p.cat.slice(1);
+    document.getElementById('pdName').textContent=p.name;
+    var pr=document.getElementById('pdPrice');pr.textContent=won;if(p.price){var sm=document.createElement('small');sm.textContent='매입가 · VAT 포함 · 1 '+unit;pr.appendChild(sm)}
+    var dl=document.getElementById('pdSpec');dl.innerHTML='';specRows(p.spec).concat([['제조사','AMOS'],['단위',unit]]).forEach(function(r){var dt=document.createElement('dt'),dd=document.createElement('dd');dt.textContent=r[0];dd.textContent=r[1];dl.appendChild(dt);dl.appendChild(dd)});
+    document.getElementById('pdAsk').href='index.html?item='+encodeURIComponent(p.name)+'#contact';
+    var idx=lastHits.indexOf(p);document.getElementById('pdPrev').disabled=idx<1;document.getElementById('pdNext').disabled=idx<0||idx>=lastHits.length-1;
+    var sib=all.filter(function(x){return x.cat===p.cat&&x!==p}).slice(0,8),th=document.getElementById('pdThumbs');th.innerHTML='';
+    sib.forEach(function(x){var a=document.createElement('a');a.href='#'+x.id;var im=document.createElement('img');im.src=x.img;im.alt='';im.loading='lazy';a.appendChild(im);a.appendChild(document.createTextNode(x.name));th.appendChild(a)});
+    document.getElementById('pdMore').hidden=!sib.length;
+    if(!pd.open){try{pd.showModal()}catch(e){pd.setAttribute('open','')}}pd.querySelector('.pd-in').scrollTop=0;pd.scrollTop=0}
+  function closePd(){if(pd.open)pd.close()}
+  pd.addEventListener('close',function(){if(/^#[rf]\d+-\d\d$/.test(location.hash)){try{history.replaceState(null,'',location.pathname+location.search+(cat==='all'?'':'#'+cat))}catch(e){}}curPd=null});
+  pd.addEventListener('click',function(e){if(e.target===pd)closePd()});
+  document.getElementById('pdClose').addEventListener('click',closePd);document.getElementById('pdBack').addEventListener('click',closePd);
+  function step(d){if(!curPd)return;var i=lastHits.indexOf(curPd)+d;if(i>=0&&i<lastHits.length)location.hash=lastHits[i].id}
+  document.getElementById('pdPrev').addEventListener('click',function(){step(-1)});document.getElementById('pdNext').addEventListener('click',function(){step(1)});
+  pd.addEventListener('keydown',function(e){if(e.key==='ArrowLeft')step(-1);if(e.key==='ArrowRight')step(1)});
+  function rowOpen(e){if(e.target.closest('a'))return;var el=e.target.closest('[data-id]');if(el)location.hash=el.dataset.id}
+  grid.addEventListener('click',rowOpen);tbody.addEventListener('click',rowOpen);
+  addEventListener('hashchange',function(){var wasPd=!!curPd;fromHash();if(!curPd&&!wasPd)window.scrollTo({top:0})});
   document.getElementById('q').addEventListener('input',function(e){q=e.target.value.trim();render()});
   function setView(v){view=v;try{localStorage.setItem('amosView2',v)}catch(e){}render()}
   document.getElementById('vGrid').addEventListener('click',function(){setView('grid')});

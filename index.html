@@ -107,7 +107,11 @@ section.block{padding-block:88px}
 /* Process */
 .process{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 48px;counter-reset:step}
 @media (max-width:760px){.process{grid-template-columns:1fr}}
-.process li{display:grid;grid-template-columns:48px minmax(0,1fr);gap:4px 14px;padding:18px 0;border-bottom:1px solid var(--line);counter-increment:step}
+.process li{display:grid;grid-template-columns:30px 66px minmax(0,1fr);gap:2px 14px;align-items:center;padding:16px 0;border-bottom:1px solid var(--line);counter-increment:step}
+.process li>b,.process li>span{grid-column:3}
+.process .pi{grid-column:2;grid-row:1/span 2;width:66px;height:50px;background:var(--bg);border:1px solid var(--line);border-radius:8px}
+.pi .b{fill:#cdbf98}.pi .cu{fill:#c27a3e}.pi .m{fill:#2f7d5c}.pi .au{fill:#d9a92e}.pi .w{fill:var(--bg)}.pi .fg{fill:var(--fg)}
+.pi .s{fill:none;stroke:var(--fg);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.pi .sc{fill:none;stroke:var(--copper);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.pi .sw{fill:none;stroke:#f4f6f8;stroke-width:1.6;stroke-linecap:round}
 .process li::before{content:counter(step,decimal-leading-zero);grid-row:span 2;font-family:var(--font-mono);font-size:15px;color:var(--copper);padding-top:2px}
 .process b{font-size:17px;font-weight:500}
 .process span{font-size:14px;color:var(--muted);font-family:var(--font-mono)}
@@ -302,17 +306,17 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
         <p>원판 재단부터 최종 검사·포장까지, 다층 PCB가 만들어지는 11단계입니다.</p>
       </div>
       <ol class="process">
-        <li><b>내층 I</b><span>재단 · 내층 노광/현상/부식/박리</span></li>
-        <li><b>내층 II</b><span>Bonding · Lay-up · Press Lamination</span></li>
-        <li><b>드릴 I</b><span>재단 · 면취 · Stack</span></li>
-        <li><b>드릴 II</b><span>Drill · Drill Bit</span></li>
-        <li><b>Photo</b><span>정면 · Lamination · 노광 · 현상</span></li>
-        <li><b>도금 II</b><span>전해 동 도금 · 부식</span></li>
-        <li><b>PSR 인쇄</b><span>Photo Imageable Solder Resist</span></li>
-        <li><b>Marking 인쇄</b><span>Legend Symbol Printing</span></li>
-        <li><b>표면처리</b><span>HASL · Gold Plating · Preflux</span></li>
-        <li><b>외형 가공</b><span>금형 · 라우팅 · 브이컷</span></li>
-        <li><b>검사</b><span>BBT · 육안검사 · 포장</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="b" x="8" y="25" width="48" height="9" rx="1"/><rect class="cu" x="10" y="21" width="9" height="4"/><rect class="cu" x="23" y="21" width="13" height="4"/><rect class="cu" x="40" y="21" width="5" height="4"/><rect class="cu" x="48" y="21" width="6" height="4"/><rect class="cu" x="12" y="34" width="14" height="3"/><rect class="cu" x="32" y="34" width="20" height="3"/></svg><b>내층 I</b><span>재단 · 내층 노광/현상/부식/박리</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><path class="s" d="M32 2v8M28 6l4 4 4-4M32 47v-6M28 43l4-4 4 4"/><rect class="cu" x="8" y="13" width="48" height="2"/><rect class="b" x="8" y="15" width="48" height="6"/><rect class="cu" x="8" y="21" width="48" height="2"/><rect class="b" x="8" y="23" width="48" height="6"/><rect class="cu" x="8" y="29" width="48" height="2"/><rect class="b" x="8" y="31" width="48" height="5"/><rect class="cu" x="8" y="36" width="48" height="2"/></svg><b>내층 II</b><span>Bonding · Lay-up · Press Lamination</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="b" x="10" y="31" width="44" height="5" rx="1"/><rect class="b" x="10" y="24" width="44" height="5" rx="1"/><rect class="b" x="10" y="17" width="44" height="5" rx="1"/><rect class="cu" x="15" y="12" width="3" height="28" rx="1"/><rect class="cu" x="46" y="12" width="3" height="28" rx="1"/></svg><b>드릴 I</b><span>재단 · 면취 · Stack</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="b" x="6" y="33" width="52" height="8" rx="1"/><rect class="w" x="13" y="33" width="4" height="8"/><rect class="w" x="22" y="33" width="4" height="8"/><path class="s" d="M40 3v6M36 9h8l-1.5 15L40 29l-2.5-5z"/><path class="s" d="M37.5 14l5 3M37.5 19l4.5 3"/></svg><b>드릴 II</b><span>Drill · Drill Bit</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="fg" x="22" y="3" width="20" height="6" rx="2"/><path class="sc" stroke-dasharray="2 3" d="M25 12v9M32 12v9M39 12v9"/><rect class="fg" x="13" y="23" width="10" height="3"/><rect class="fg" x="36" y="23" width="13" height="3"/><rect class="cu" x="8" y="27" width="48" height="2"/><rect class="b" x="8" y="29" width="48" height="8"/></svg><b>Photo</b><span>정면 · Lamination · 노광 · 현상</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="b" x="8" y="22" width="48" height="12"/><rect class="w" x="28" y="22" width="8" height="12"/><rect class="cu" x="26" y="20" width="3" height="16"/><rect class="cu" x="35" y="20" width="3" height="16"/><rect class="cu" x="8" y="20" width="21" height="2"/><rect class="cu" x="35" y="20" width="21" height="2"/><rect class="cu" x="8" y="34" width="21" height="2"/><rect class="cu" x="35" y="34" width="21" height="2"/><circle class="sc" cx="15" cy="11" r="2.2"/><circle class="sc" cx="22" cy="6" r="1.6"/><circle class="sc" cx="46" cy="10" r="2.2"/></svg><b>도금 II</b><span>전해 동 도금 · 부식</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><path class="s" d="M24 4l10 13M21 17h16"/><rect class="b" x="8" y="28" width="48" height="9"/><rect class="m" x="8" y="22" width="48" height="6"/><rect class="cu" x="14" y="22" width="8" height="6"/><rect class="cu" x="42" y="22" width="8" height="6"/></svg><b>PSR 인쇄</b><span>Photo Imageable Solder Resist</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="m" x="6" y="10" width="52" height="28" rx="2"/><rect class="sw" x="12" y="16" width="14" height="11" rx="1"/><rect class="cu" x="15" y="19" width="3" height="5"/><rect class="cu" x="20" y="19" width="3" height="5"/><path class="sw" d="M32 18h16M32 23h10M12 32h20M38 32h12"/></svg><b>Marking 인쇄</b><span>Legend Symbol Printing</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="m" x="6" y="25" width="52" height="12" rx="1"/><rect class="au" x="11" y="21" width="11" height="5" rx="1"/><rect class="au" x="27" y="21" width="11" height="5" rx="1"/><rect class="au" x="43" y="21" width="10" height="5" rx="1"/><path class="sc" d="M32 3c4 5 5 7 5 9a5 5 0 0 1-10 0c0-2 1-4 5-9z"/></svg><b>표면처리</b><span>HASL · Gold Plating · Preflux</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="sc" x="7" y="7" width="50" height="34" rx="7" stroke-dasharray="3 3"/><rect class="m" x="12" y="12" width="40" height="24" rx="3"/><path class="sw" stroke-dasharray="2 2" d="M32 13v22"/><circle class="s" cx="57" cy="7" r="4"/></svg><b>외형 가공</b><span>금형 · 라우팅 · 브이컷</span></li>
+        <li><svg class="pi" viewBox="0 0 64 48" aria-hidden="true"><rect class="m" x="6" y="31" width="52" height="8" rx="1"/><rect class="au" x="15" y="28" width="9" height="3"/><rect class="au" x="40" y="28" width="9" height="3"/><path class="s" d="M19.5 5v21M44.5 5v21M16 5h7M41 5h7"/><path class="sc" stroke-width="2.4" d="M27 15l4 4 7-8"/></svg><b>검사</b><span>BBT · 육안검사 · 포장</span></li>
       </ol>
     </div>
   </section>

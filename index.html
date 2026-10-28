@@ -202,6 +202,9 @@ form.f .full{grid-column:1/-1}
 form.f label{display:grid;gap:6px;font-size:14px;color:#c9d3df}
 form.f input,form.f select,form.f textarea{font:400 15px var(--font-sans);padding:11px 12px;border-radius:8px;border:1px solid #33475f;background:#0e1a2b;color:var(--silk);width:100%;min-width:0}
 form.f textarea{min-height:110px;resize:vertical}
+form.f label.agree{display:flex;gap:8px;align-items:flex-start;font-size:13px;line-height:1.5}
+form.f label.agree input{width:18px;height:18px;margin:2px 0 0;flex:none;accent-color:var(--copper)}
+form.f button[disabled]{opacity:.6;cursor:wait}
 .form-msg{font-size:14px;color:#e2b48a;margin:0}
 
 footer{background:#09121e;color:#8796a8;font-size:14px}
@@ -417,7 +420,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
           <div><dt>ADDR</dt><dd style="font-size:15px">대전광역시 유성구 신성로 68번길 31, 101호</dd></div>
         </dl>
       </div>
-      <form class="f" id="quoteForm" novalidate>
+      <form class="f" id="quoteForm" action="https://formsubmit.co/amos@amos3000.co.kr" method="POST" novalidate>
         <label>회사·기관명<input id="f-company" name="company" autocomplete="organization" required></label>
         <label>담당자<input id="f-name" name="name" autocomplete="name" required></label>
         <label>연락처<input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
@@ -425,7 +428,13 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
         <label class="full">문의 종류
           <select id="f-type" name="type"><option>Rigid PCB 제작</option><option>Flexible PCB 제작</option><option>PCB 설계</option><option>PCB 조립</option><option>Simulation</option><option>아직 모르겠어요</option></select>
         </label>
-        <label class="full">문의 내용<textarea id="f-msg" name="message" placeholder="층수, 크기, 수량, 희망 납기 등을 적어 주세요"></textarea></label>
+        <label class="full">문의 내용<textarea id="f-msg" name="message" placeholder="층수, 크기, 수량, 희망 납기 등을 적어 주세요" required></textarea></label>
+        <label>보안 확인 · <span id="capQ"></span> = ?<input id="f-cap" type="text" inputmode="numeric" autocomplete="off" placeholder="계산 답을 숫자로" required></label>
+        <label class="full agree"><input id="f-agree" type="checkbox" required><span>개인정보(이름·연락처·이메일) 수집·이용에 동의합니다. 문의 답변에만 사용합니다.</span></label>
+        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+        <input type="hidden" name="_subject" value="[AMOS 홈페이지] 새 견적 문의">
+        <input type="hidden" name="_template" value="table">
+        <input type="hidden" name="_next" value="https://amos3000c-dot.github.io/?sent=1#contact">
         <div class="full" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
           <button class="btn btn-copper" type="submit">문의 보내기</button>
           <p class="form-msg" id="formMsg" role="status"></p>
@@ -514,11 +523,20 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     });
   });
 
-  document.getElementById('quoteForm').addEventListener('submit',function(e){
-    e.preventDefault();
-    var msg=document.getElementById('formMsg'),need=['f-company','f-name','f-email'].filter(function(id){return !document.getElementById(id).value.trim()});
-    if(need.length){msg.textContent='회사·기관명, 담당자, 이메일을 입력해 주세요.';document.getElementById(need[0]).focus();return}
-    msg.textContent='시안 페이지라 실제로 전송되지는 않습니다. 공개할 때 폼 서비스와 연결합니다.';
+  var form=document.getElementById('quoteForm'),msg=document.getElementById('formMsg'),capA=2+Math.floor(Math.random()*8),capB=1+Math.floor(Math.random()*9);
+  document.getElementById('capQ').textContent=capA+' + '+capB;
+  if(/[?&]sent=1/.test(location.search)){msg.textContent='문의가 접수되었습니다. 확인 후 연락드리겠습니다.'}
+  form.addEventListener('submit',function(e){
+    var val=function(id){return document.getElementById(id).value.trim()};
+    var need=['f-company','f-name','f-email'].filter(function(id){return !val(id)}),fail='';
+    if(need.length){fail='회사·기관명, 담당자, 이메일을 입력해 주세요.'}
+    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('f-email'))){fail='이메일 주소를 다시 확인해 주세요.';need=['f-email']}
+    else if(!val('f-msg')){fail='문의 내용을 적어 주세요.';need=['f-msg']}
+    else if(parseInt(val('f-cap'),10)!==capA+capB){fail='보안 확인 답이 맞지 않습니다. 다시 계산해 주세요.';need=['f-cap']}
+    else if(!document.getElementById('f-agree').checked){fail='개인정보 수집·이용에 동의해 주세요.';need=['f-agree']}
+    else if(form.querySelector('[name=_honey]').value){fail='전송할 수 없습니다.'}
+    if(fail){e.preventDefault();msg.textContent=fail;if(need[0])document.getElementById(need[0]).focus();return}
+    var b=form.querySelector('button[type=submit]');b.disabled=true;b.textContent='보내는 중…';msg.textContent='';
   });
 
   var cv=document.getElementById('traces'),ctx=cv.getContext('2d'),W,H,paths=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;

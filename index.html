@@ -229,6 +229,14 @@ form.f label.agree{display:flex;gap:8px;align-items:flex-start;font-size:13px;li
 form.f label.agree input{width:18px;height:18px;margin:2px 0 0;flex:none;accent-color:var(--copper)}
 form.f button[disabled]{opacity:.6;cursor:wait}
 .form-msg{font-size:14px;color:#e2b48a;margin:0}
+.ask{background:var(--substrate-2);border:1px solid #22344d;border-radius:14px;padding:28px;color:#c9d3df;align-self:start}
+.ask h3{margin:0 0 8px;font-size:20px;color:var(--silk)}
+.ask p{margin:0 0 14px;font-size:15px}
+.ask ul{margin:0 0 22px;padding-left:18px;display:grid;gap:6px;font-size:15px}
+.ask-btns{display:flex;gap:10px;flex-wrap:wrap}
+.ask .btn-line{color:var(--silk);border-color:#33475f}
+.ask-note{margin:14px 0 0 !important;font-size:14px !important;color:#e2b48a}
+.ask-note:empty{display:none}
 
 footer{background:#09121e;color:#8796a8;font-size:14px}
 footer .wrap{padding-block:36px;display:grid;gap:10px}
@@ -441,26 +449,21 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
           <div><dt>ADDR</dt><dd style="font-size:15px">대전광역시 유성구 신성로 68번길 31, 101호</dd></div>
         </dl>
       </div>
-      <form class="f" id="quoteForm" action="https://formsubmit.co/3000amos@gmail.com" method="POST" novalidate>
-        <label>회사·기관명<input id="f-company" name="company" autocomplete="organization" required></label>
-        <label>담당자<input id="f-name" name="name" autocomplete="name" required></label>
-        <label>연락처<input id="f-phone" name="phone" type="tel" autocomplete="tel"></label>
-        <label>이메일<input id="f-email" name="email" type="email" autocomplete="email" required></label>
-        <label class="full">문의 종류
-          <select id="f-type" name="type"><option>Rigid PCB 제작</option><option>Flexible PCB 제작</option><option>PCB 설계</option><option>PCB 조립</option><option>Simulation</option><option>아직 모르겠어요</option></select>
-        </label>
-        <label class="full">문의 내용<textarea id="f-msg" name="message" placeholder="층수, 크기, 수량, 희망 납기 등을 적어 주세요" required></textarea></label>
-        <label>보안 확인 · <span id="capQ"></span> = ?<input id="f-cap" type="text" inputmode="numeric" autocomplete="off" placeholder="계산 답을 숫자로" required></label>
-        <label class="full agree"><input id="f-agree" type="checkbox" required><span>개인정보(이름·연락처·이메일) 수집·이용에 동의합니다. 문의 답변에만 사용합니다.</span></label>
-        <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
-        <input type="hidden" name="_subject" value="[AMOS 홈페이지] 새 견적 문의">
-        <input type="hidden" name="_template" value="table">
-        <input type="hidden" name="_next" value="https://www.amos3000.co.kr/?sent=1#contact">
-        <div class="full" style="display:flex;gap:14px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-copper" type="submit">문의 보내기</button>
-          <p class="form-msg" id="formMsg" role="status"></p>
+      <div class="ask">
+        <h3>메일이나 전화로 문의해 주세요</h3>
+        <p>아래 내용을 함께 보내 주시면 사양을 검토해 빠르게 답변드립니다.</p>
+        <ul>
+          <li>회사·기관명, 담당자, 연락처</li>
+          <li>거버(Gerber) 파일 또는 설계 파일</li>
+          <li>기판 크기 · 층수 · 두께 · 재질</li>
+          <li>제작 수량과 희망 납기</li>
+        </ul>
+        <div class="ask-btns">
+          <a class="btn btn-copper" id="mailBtn" href="mailto:3000amos@gmail.com?subject=%5BAMOS%20%ED%99%88%ED%8E%98%EC%9D%B4%EC%A7%80%5D%20%EA%B2%AC%EC%A0%81%20%EB%AC%B8%EC%9D%98">메일 보내기</a>
+          <a class="btn btn-line" href="tel:042-861-3402">전화 042-861-3402</a>
         </div>
-      </form>
+        <p class="ask-note" id="askNote"></p>
+      </div>
     </div>
   </section>
 </main>
@@ -530,7 +533,6 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     if(ans.use==='rf'||ans.use==='opt')items.push('원하는 기판 재질과 임피던스 조건');
     if(ans.type==='flex')items.push('굴곡 부위와 보강판 위치');
     quiz.innerHTML=steps(2)+'<div class="result"><h4>'+title+'</h4><p>'+desc+' 아래 자료를 준비해 문의해 주세요.</p><ul class="checklist">'+items.map(function(x){return '<li>'+x+'</li>'}).join('')+'</ul><div class="row-btns"><a class="btn btn-copper" href="#contact">이 내용으로 문의하기</a><button class="btn btn-line" type="button" id="restart">다시 고르기</button></div></div>';
-    document.getElementById('f-type').selectedIndex={rigid:0,flex:1,unknown:5}[ans.type];
     document.getElementById('restart').addEventListener('click',function(){ans={};ask(0)});
   }
   ask(0);
@@ -544,22 +546,7 @@ footer .meta{display:flex;flex-wrap:wrap;gap:6px 18px}
     });
   });
 
-  var form=document.getElementById('quoteForm'),msg=document.getElementById('formMsg'),capA=2+Math.floor(Math.random()*8),capB=1+Math.floor(Math.random()*9);
-  document.getElementById('capQ').textContent=capA+' + '+capB;
-  if(/[?&]sent=1/.test(location.search)){msg.textContent='문의가 접수되었습니다. 확인 후 연락드리겠습니다.'}
-  try{var it=new URLSearchParams(location.search).get('item');if(it){var fm=document.getElementById('f-msg');if(!fm.value)fm.value='문의 제품: '+it+'\n수량: \n희망 납기: '}}catch(e){}
-  form.addEventListener('submit',function(e){
-    var val=function(id){return document.getElementById(id).value.trim()};
-    var need=['f-company','f-name','f-email'].filter(function(id){return !val(id)}),fail='';
-    if(need.length){fail='회사·기관명, 담당자, 이메일을 입력해 주세요.'}
-    else if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val('f-email'))){fail='이메일 주소를 다시 확인해 주세요.';need=['f-email']}
-    else if(!val('f-msg')){fail='문의 내용을 적어 주세요.';need=['f-msg']}
-    else if(parseInt(val('f-cap'),10)!==capA+capB){fail='보안 확인 답이 맞지 않습니다. 다시 계산해 주세요.';need=['f-cap']}
-    else if(!document.getElementById('f-agree').checked){fail='개인정보 수집·이용에 동의해 주세요.';need=['f-agree']}
-    else if(form.querySelector('[name=_honey]').value){fail='전송할 수 없습니다.'}
-    if(fail){e.preventDefault();msg.textContent=fail;if(need[0])document.getElementById(need[0]).focus();return}
-    var b=form.querySelector('button[type=submit]');b.disabled=true;b.textContent='보내는 중…';msg.textContent='';
-  });
+  try{var it=new URLSearchParams(location.search).get('item');if(it){var mb=document.getElementById('mailBtn');mb.href='mailto:3000amos@gmail.com?subject='+encodeURIComponent('[AMOS 홈페이지] 견적 문의 - '+it)+'&body='+encodeURIComponent('문의 제품: '+it+'\n수량: \n희망 납기: \n회사·담당자: \n연락처: \n');document.getElementById('askNote').textContent='문의 제품: '+it+' — 메일 보내기를 누르면 제품명이 자동으로 들어갑니다.'}}catch(e){}
 
   var cv=document.getElementById('traces'),ctx=cv.getContext('2d'),W,H,paths=[],reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
   function build(){

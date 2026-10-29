@@ -138,10 +138,10 @@ td.spec{color:var(--muted)}
 dialog.pd{border:0;padding:0;border-radius:14px;width:min(880px,calc(100vw - 32px));max-height:calc(100vh - 32px);background:var(--surface);color:var(--fg);box-shadow:0 24px 60px rgba(8,16,28,.35)}
 dialog.pd::backdrop{background:rgba(8,16,28,.6)}
 .pd-in{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
-@media (max-width:720px){.pd-in{grid-template-columns:1fr}}
-.pd-ph{background:#fff;display:grid;place-items:center;padding:28px;border-right:1px solid var(--line);min-height:300px}
-@media (max-width:720px){.pd-ph{border-right:0;border-bottom:1px solid var(--line);min-height:220px}}
-.pd-ph img{width:100%;max-width:400px;height:auto;max-height:340px;object-fit:contain;image-rendering:auto}
+@media (max-width:720px){.pd-in{grid-template-columns:minmax(0,1fr)}}
+.pd-ph{position:relative;background:#fff;border-right:1px solid var(--line);min-height:340px;overflow:hidden}
+@media (max-width:720px){.pd-ph{border-right:0;border-bottom:1px solid var(--line);min-height:0;aspect-ratio:4/3}dialog.pd .pd-ph img{top:58px;left:14px;width:calc(100% - 28px);height:calc(100% - 72px)}}
+.pd-ph img{position:absolute;top:28px;left:28px;width:calc(100% - 56px);height:calc(100% - 56px);max-width:none;object-fit:contain}
 .pd-tx{padding:28px;display:flex;flex-direction:column;gap:14px;min-width:0}
 .pd-tx h2{font-family:var(--font-mono);font-size:22px;font-weight:500;overflow-wrap:anywhere;margin:0}
 .pd-price{font-family:var(--font-mono);font-size:24px;font-weight:500;font-variant-numeric:tabular-nums}

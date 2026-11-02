@@ -1,0 +1,50 @@
+# AMOS (아모스) – 대전 PCB 설계·제조·조립 전문
+
+> AMOS(아모스)는 대전광역시 유성구에 있는 PCB(인쇄회로기판) 전문 업체입니다. PCB 설계, 제조, 조립과 신호 해석(Simulation)까지 한 곳에서 제공하며, RF·고주파 보드, 광통신 평가보드(EVB), 임피던스 컨트롤·Build-up PCB, FPCB(연성회로기판)를 샘플부터 양산까지 제작합니다.
+
+## 회사 정보
+
+- 상호: AMOS (아모스)
+- 대표: 최낙환
+- 사업자등록번호: 305-19-57322
+- 주소: 대전광역시 유성구 신성로 68번길 31, 101호
+- 전화: 042-861-3402
+- 팩스: 042-362-3400
+- 이메일: 3000amos@gmail.com
+- 홈페이지: https://www.amos3000.co.kr/
+
+## 서비스
+
+- PCB 설계: Build-up, Blind & Buried Via 등 회로 특성에 맞춘 설계. High speed 보드, 임피던스 컨트롤 PCB, EMI 보드, RF 보드.
+- PCB 제조: 국내외 협력 업체와 함께 고밀도 PCB 제조. 임피던스 컨트롤 PCB, Build-up·Buried Via PCB, Flexible PCB(FPCB).
+- PCB 조립: 개발용 유닛 보드의 수삽·자삽, 샘플 조립, 양산 조립, Back Plane 보드 조립.
+- Simulation(신호 해석): Impedance Analysis, Delay(Timing) Analysis, Noise Analysis.
+- 출장 서비스: 보안이 필요하거나 고객이 요청하는 경우 직접 방문해 상담과 지원.
+
+## 설계·샘플 제작 실적 분야
+
+ADSL, TRS, PCS, CDMA, WLL, GSM, ATM, Satellite, RF Board, Driver Board, Mother Board, Super Mini Computer, MCM-L, MCM-C, MCM-D, BGA, PBGA, Micro-BGA
+
+## 제작 사례
+
+홈페이지에 Rigid PCB 114종, Flexible PCB 33종 등 PCB 147종의 사진, 대표 규격, 가격(VAT 포함)을 공개하고 있습니다. RF·고주파 보드, 100G/200G/400G PAM4 ROSA·TOSA 광통신 평가보드, 테스트 보드, 세라믹·RO4350B 기판, TO56·TO-CAN용 FPCB 등이 있습니다.
+
+- [제품·제작 사례 147종](https://www.amos3000.co.kr/products.html)
+
+## PCB 제조 공정 (11단계)
+
+내층 I(재단·노광·현상·부식·박리) → 내층 II(Bonding·Lay-up·Press Lamination) → 드릴 I(재단·면취·Stack) → 드릴 II → Photo(정면·Lamination·노광·현상) → 도금 → PSR 인쇄 → Marking 인쇄 → 표면처리(HASL·Gold Plating·Preflux) → 외형 가공(금형·라우팅·브이컷) → 검사(BBT·육안검사·포장)
+
+## 견적 문의 방법
+
+이메일(3000amos@gmail.com) 또는 전화(042-861-3402)로 문의합니다. 아래 자료를 함께 보내면 사양을 검토해 답변합니다.
+
+- 회사·기관명, 담당자, 연락처
+- 거버(Gerber) 파일 또는 설계 파일
+- 기판 크기, 층수, 두께, 재질
+- 제작 수량과 희망 납기
+
+## 페이지
+
+- [홈](https://www.amos3000.co.kr/): 회사 소개, 사업분야, 제조 공정, FPCB, 견적 가이드, 연락처
+- [제품](https://www.amos3000.co.kr/products.html): PCB 제품·제작 사례 147종
